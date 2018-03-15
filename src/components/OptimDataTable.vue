@@ -1,12 +1,12 @@
 <template>
   <div>
     <!--TOP SLOT-->
-    <row2 v-if="$slots['top']">
+    <div class="row" v-if="$slots['top']">
       <slot name="top"></slot>
-    </row2>
+    </div>
     <space v-if="$slots['top']"></space>
     <!--SHOW SEARCH-->
-    <row2 v-if="showSearch">
+    <div class="row" v-if="showSearch">
       <div class="col-md-2" v-if="enableExport">
         <download-excel
               class   = "btn btn-default pointer-button"
@@ -29,8 +29,8 @@
           </span>
         </div>
       </div>
-    </row2>
-    <space v-if="showSearch"></space>
+    </div>
+    <br v-if="showSearch"/>
     <!--SELECT ALL-->
     <div class="selectAll" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
       <span v-if="$c_areAllItemsSelected">
@@ -131,9 +131,9 @@
       </div>
     </div>
     <!--PAGINATION-->
-    <space v-if="showPagination"></space>
-    <row2 v-if="showPagination">
-      <single-select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></single-select>
+    <br v-if="showPagination"/>
+    <div class="row" v-if="showPagination">
+      <select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></select>
       <div class="col-md-4 col-sm-12 ml-md-auto">
         <ul class="pagination justify-content-end unselectable">
           <li class="page-item"><a style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)"><i class="fa fa-angle-double-left"></i>1</a></li>
@@ -141,12 +141,12 @@
           <li class="page-item"><a style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{$c_pages}}<i class="fa fa-angle-double-right"></i></a></li>
         </ul>
       </div>
-    </row2>
+    </div>
     <!--BOTTOM SLOT-->
-    <space v-if="$slots['bottom']"></space>
-    <row2 v-if="$slots['bottom']">
+    <br v-if="$slots['bottom']"/>
+    <div class="row" v-if="$slots['bottom']">
       <slot name="bottom"></slot>
-    </row2>
+    </div>
   </div>
 </template>
 

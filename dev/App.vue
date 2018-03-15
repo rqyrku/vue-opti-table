@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-optim-table :selectable="false" :header-fields="table.fields" :items="table.items">
+    <vue-optim-table :header-fields="table.fields" :items="table.items">
       
     </vue-optim-table>
   </div>
