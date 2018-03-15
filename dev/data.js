@@ -9,7 +9,7 @@ export default function () {
             content: item => item.name,
             sortable: true,
             searchable: true,
-            style: { cursor: 'pointer' },
+            style: { textAlign: 'center' },
           },
         },
         {

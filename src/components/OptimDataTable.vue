@@ -9,24 +9,18 @@
     <div class="row" v-if="showSearch">
       <div class="col-md-2" v-if="enableExport">
         <download-excel
-              class   = "btn btn-default pointer-button"
-              :data   = "items"
-              :fields = "$c_exportTable"
-              type    = "csv"
-              name    = "export.csv">
-              Download CSV
+          class   = "btn btn-light pointer-button"
+          :data   = "items"
+          :fields = "$c_exportTable"
+          type    = "csv"
+          name    = "export.csv">
+          Download CSV
         </download-excel>
       </div>
       <slot name="search"></slot>
-      <div class="col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
+      <div class="col-md-4 col-sm-12 ml-md-auto" :class="searchClass">
         <div class="input-group">
           <input type="text" class="form-control" v-model="models.search" placeholder="Search for...">
-          <span class="input-group-btn" style="margin-left: 14px;">
-            <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i> Search</button>
-          </span>
-          <span class="input-group-btn" style="margin-left: 14px;">
-            <button @click="models.search = ''" class="btn btn-secondary" type="button"><i class="fa fa-close"></i> Clear</button>
-          </span>
         </div>
       </div>
     </div>
@@ -133,7 +127,7 @@
     <!--PAGINATION-->
     <br v-if="showPagination"/>
     <div class="row" v-if="showPagination">
-      <select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></select>
+      <b-form-select class="col-md-2 col-sm-12" v-model="tableRows" :options="rows"></b-form-select>
       <div class="col-md-4 col-sm-12 ml-md-auto">
         <ul class="pagination justify-content-end unselectable">
           <li class="page-item"><a style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)"><i class="fa fa-angle-double-left"></i>1</a></li>
