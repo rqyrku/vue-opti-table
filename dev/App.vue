@@ -1,18 +1,18 @@
 <template>
   <div class="container mt-2">
-    <vue-optim-table :header-fields="table.fields" :items="table.items">
+    <vue-opti-table :header-fields="table.fields" :items="table.items">
       
-    </vue-optim-table>
+    </vue-opti-table>
   </div>
 </template>
 
 <script>
   import Vue from 'vue';
   import BootstrapVue from 'bootstrap-vue';
-  import VueOptimTable from '../src/index';
+  import VueOptiTable from '../src/index';
   import data from './data';
   Vue.use(BootstrapVue);
-  Vue.use(VueOptimTable);
+  Vue.use(VueOptiTable);
   export default {
     name: 'test',
     data,

@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rqyrku/vue-optim-table"
+    "url": "git+https://github.com/rqyrku/vue-opti-table"
   },
   "dependencies": {
     "vue": "^2.5.2",

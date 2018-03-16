@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <br v-if="showSearch"/>
+    <div class="space" v-if="showSearch"></div>
     <!--SELECT ALL-->
     <div class="selectAll" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
       <span v-if="$c_areAllItemsSelected">
@@ -125,7 +125,7 @@
       </div>
     </div>
     <!--PAGINATION-->
-    <br v-if="showPagination"/>
+    <div class="space" v-if="showPagination"></div>
     <div class="row" v-if="showPagination">
       <b-form-select class="col-md-2 col-sm-12" v-model="tableRows" :options="rows"></b-form-select>
       <div class="col-md-4 col-sm-12 ml-md-auto">
@@ -185,6 +185,10 @@ export default {
     text-align: center;
     background: #eee;
     font-size: 11px;
+  }
+  .space {
+    height: 14px;
+    width: 100%;
   }
 </style>
 
