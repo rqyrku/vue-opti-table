@@ -1,7 +1,7 @@
 var webpack = require("webpack");
 var path = require('path')
 var version = require("./../package.json").version;
-var banner = "/**\n" + " * vue-optim-table v" + version + "\n" + " * https://github.com/rqyrku/vue-optim-table\n" + " * Released under the MIT License.\n" + " */\n";
+var banner = "/**\n" + " * vue-opti-table v" + version + "\n" + " * https://github.com/rqyrku/vue-opti-table\n" + " * Released under the MIT License.\n" + " */\n";
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var StatsPlugin = require("stats-webpack-plugin");
 
@@ -9,11 +9,11 @@ var utils = require('./utils')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 
-var cssFileName = "vue-optim-table.min.css";
-var jsFileName = "vue-optim-table.min.js";
+var cssFileName = "vue-opti-table.min.css";
+var jsFileName = "vue-opti-table.min.js";
 
 if(process.env.MINIFY && process.env.MINIFY === "false"){
-  jsFileName = "vue-optim-table.js"
+  jsFileName = "vue-opti-table.js"
 }
 var minifyPlugins = [
   new webpack.LoaderOptionsPlugin({

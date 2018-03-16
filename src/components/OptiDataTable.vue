@@ -154,7 +154,7 @@ import methods from './methods';
 import watch from './watch';
 
 export default {
-  name: 'vue-optim-table',
+  name: 'vue-opti-table',
   directives: { onClickaway },
   props,
   computed,

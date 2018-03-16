@@ -1,8 +1,23 @@
-# vue-optim-table
+# vue-opti-table
 
 > VueJS 2 Optimized Datatable
 
-## Build Setup
+## Installing
+
+Install with npm:
+```
+npm install --save vue-good-table
+```
+
+import into project:
+```
+import Vue from 'vue';
+import VueOptiTable from 'vue-opti-table';
+
+Vue.use(VueGoodTable);
+```
+
+### Build Setup
 
 ``` bash
 # install dependencies
@@ -12,10 +27,7 @@ npm install
 npm run dev
 
 # build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+npm run bundle
 
 # run unit tests
 npm run unit
