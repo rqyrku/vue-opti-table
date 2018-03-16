@@ -4,7 +4,7 @@
     <div class="row" v-if="$slots['top']">
       <slot name="top"></slot>
     </div>
-    <space v-if="$slots['top']"></space>
+    <div class="space" v-if="$slots['top']"></div>
     <!--SHOW SEARCH-->
     <div class="row" v-if="showSearch">
       <div class="col-md-2" v-if="enableExport">

@@ -6,15 +6,15 @@
 
 Install with npm:
 ```
-npm install --save vue-good-table
+npm install --save vue-opti-table
 ```
 
-import into project:
+Import into project:
 ```
 import Vue from 'vue';
 import VueOptiTable from 'vue-opti-table';
 
-Vue.use(VueGoodTable);
+Vue.use(VueOptiTable);
 ```
 
 ### Build Setup
@@ -35,5 +35,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
