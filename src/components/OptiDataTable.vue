@@ -127,17 +127,27 @@
     <!--PAGINATION-->
     <div class="space" v-if="showPagination"></div>
     <div class="row" v-if="showPagination">
-      <b-form-select class="col-md-2 col-sm-12" v-model="tableRows" :options="rows"></b-form-select>
+      <opti-single-select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></opti-single-select>
       <div class="col-md-4 col-sm-12 ml-md-auto">
         <ul class="pagination justify-content-end unselectable">
-          <li class="page-item"><a style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)"><i class="fa fa-angle-double-left"></i>1</a></li>
-          <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'page-item-active': currentPage === page}" class="page-item"><a :class="{'btn-bg-color': currentPage === page}" @click="$_changePageAction(page)">{{ page }}</a></li>
-          <li class="page-item"><a style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{$c_pages}}<i class="fa fa-angle-double-right"></i></a></li>
+          <li class="page-item">
+            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            1</a>
+          </li>
+          <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}" class="page-item"><a :class="{'btn-bg-color': currentPage === page}" class="page-link" @click="$_changePageAction(page)">{{ page }}</a></li>
+          <li class="page-item">
+            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{$c_pages}}
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
     <!--BOTTOM SLOT-->
-    <br v-if="$slots['bottom']"/>
+    <div class="space" v-if="$slots['bottom']"></div>
     <div class="row" v-if="$slots['bottom']">
       <slot name="bottom"></slot>
     </div>
@@ -147,6 +157,7 @@
 <script>
 import JsonExcel from 'vue-json-excel';
 import { directive as onClickaway } from 'vue-clickaway';
+import OptiSingleSelect from './OptiSingleSelect';
 import props from './props';
 import data from './data';
 import computed from './computed';
@@ -163,6 +174,7 @@ export default {
   watch,
   components: {
     downloadExcel: JsonExcel,
+    OptiSingleSelect,
   },
   created() {
     this.$emit('input', this.$c_selectedItems);

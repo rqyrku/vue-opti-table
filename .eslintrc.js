@@ -52,5 +52,6 @@ module.exports = {
     'array-callback-return': 'off',
     'no-restricted-syntax': 'off',
     'consistent-return': 'off',
+    'no-shadow': 'off',
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-2">
-    <vue-opti-table :header-fields="table.fields" :items="table.items">
+    <vue-opti-table selectable :header-fields="table.fields" :items="table.items">
       
     </vue-opti-table>
   </div>
