@@ -1,5 +1,6 @@
 export default {
   selectable: { type: Boolean },
+  hover: { type: Boolean, default: false },
   headerFields: { type: Array, required: true },
   items: { type: Array, required: true },
   page: { type: Number, default: 1 },
@@ -10,5 +11,6 @@ export default {
   showSearch: { type: Boolean, default: true },
   showPagination: { type: Boolean, default: true },
   enableExport: { type: Boolean, default: true },
-  defaultRows: { type: Number, default: 10 },
-};
+  exportLabel: { type: String, default: 'export' },
+  enableColumns: { type: Boolean, default: true }
+}
