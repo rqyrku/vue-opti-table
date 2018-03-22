@@ -167,7 +167,6 @@
 
 <script>
 import JsonExcel from 'vue-json-excel';
-import { directive as onClickaway } from 'vue-clickaway';
 import OptiSingleSelect from './OptiSingleSelect';
 import props from './props';
 import data from './data';
@@ -177,7 +176,6 @@ import watch from './watch';
 
 export default {
   name: 'vue-opti-table',
-  directives: { onClickaway },
   props,
   computed,
   data,

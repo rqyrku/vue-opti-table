@@ -26,9 +26,8 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
-    "vue-json-excel": "^0.1.7",
-    "vue-clickaway": "^2.1.0",
-    "vue-clipboard2": "0.0.8"
+    "vue-clipboard2": "0.0.8",
+    "vue-json-excel": "^0.1.7"
   },
   "license": "MIT",
   "devDependencies": {
