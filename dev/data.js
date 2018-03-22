@@ -11,6 +11,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Status', style: '' },
@@ -21,6 +22,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Duplicate', style: '' },
@@ -31,6 +33,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Traffic Source', style: '' },
@@ -41,6 +44,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Tracker', style: '' },
@@ -51,6 +55,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'User ID', style: '' },
@@ -61,6 +66,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Bid', style: '' },
@@ -71,6 +77,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
         {
           header: { content: 'Bid Type', style: '' },
@@ -81,6 +88,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
+          display: true,
         },
       ],
       items: [

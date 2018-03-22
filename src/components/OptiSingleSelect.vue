@@ -7,7 +7,7 @@
         v-for="(item, i) in list" :key="i"
         :class="{ 'active-item': item.selected }"
         @click="$_itemClickAction(item)"
-        v-html="item.text"
+        v-html="item.content"
       ></b-dropdown-item>
 
     </b-dropdown>
@@ -35,7 +35,7 @@ export default {
       if (this.staticPlaceholder) {
         return this.staticPlaceholder;
       }
-      return (this.$c_selectedItem && this.$c_selectedItem.text) || this.placeholder;
+      return (this.$c_selectedItem && this.$c_selectedItem.content) || this.placeholder;
     },
   },
   methods: {

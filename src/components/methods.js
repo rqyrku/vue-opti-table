@@ -1,8 +1,4 @@
 export default {
-  // $_calcTotal (fieldName, fixed = 0) {
-  //   const t = this.$c_items.reduce((a, b) => a + b[fieldName] || 0, 0)
-  //   return fixed ? t.toFixed(fixed) : t
-  // },
   $_fieldClickAction(field) {
     if (field.item.sortable) {
       if (!(this.sortKey === field.item.key)) {
@@ -18,6 +14,9 @@ export default {
         this.sortOrder = 'asc';
       }
     }
+  },
+  $_selectColumn(col) {
+    col.display = !col.display;
   },
   $_changePageAction(page) {
     this.currentPage = page;

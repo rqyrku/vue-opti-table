@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="datatable-wrapper">
     <!--TOP SLOT-->
     <div class="row" v-if="$slots['top']">
       <slot name="top"></slot>
@@ -7,21 +7,18 @@
     <div class="space" v-if="$slots['top']"></div>
     <!--SHOW SEARCH-->
     <div class="row" v-if="showSearch">
-      <div class="col-md-2" v-if="enableExport">
-        <download-excel
-          class   = "btn btn-light pointer-button"
-          :data   = "items"
-          :fields = "$c_exportTable"
-          type    = "csv"
-          name    = "export.csv">
-          Download CSV
-        </download-excel>
-      </div>
       <slot name="search"></slot>
-      <div class="col-md-4 col-sm-12 ml-md-auto" :class="searchClass">
-        <div class="input-group">
-          <input type="text" class="form-control" v-model="models.search" placeholder="Search for...">
-        </div>
+      <div class="col-xl-4 col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
+        <b-input-group>
+          <b-form-input v-model="models.search"  placeholder="Search..." @focus.native="$event.target.select()"></b-form-input>
+          <b-input-group-button slot="right" v-if="enableColumns">
+            <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
+              <b-dropdown-header v-for="(col, i) in headerFields" :key="i" v-if="col.item.key !== 'actions'">
+                <b-form-checkbox v-model="col.display" @click.prevent.native="$_selectColumn(col)">{{col.header.content}}</b-form-checkbox>
+              </b-dropdown-header>
+            </b-dropdown>
+          </b-input-group-button>
+        </b-input-group>
       </div>
     </div>
     <div class="space" v-if="showSearch"></div>
@@ -38,24 +35,26 @@
     </div>
     <!--TABLE-->
     <div class="table-holder">
-      <table class="table table-striped">
+      <table :class="[{'table-hover': hover}, 'table table-striped']">
         <!--ALL CHECKBOX & TABLE HEADERS-->
         <thead>
           <tr>
             <th v-if="selectable" style="text-align: center;">
               <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
             </th>
-            <th v-for="(col, i) in headerFields" :key="i" :style="col.header.style || ''">
+            <th v-for="(col, i) in headerFields" v-if="col.display !== false" :key="i" :style="col.header.style || ''">
               <div class="header">
                 <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
                   <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
                   <div style="height: 5px;"></div>
                   <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}" class="arrow-down"></div>
                 </div>
-                <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;" v-html="col.header.content"></div>
+                <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
+                  <span v-html="col.header.content"></span>
+                  <i v-if="col.header.info" v-b-tooltip="{hover: true, html: true, title: col.header.info, boundary: 'window'}" class="fa fa-info-circle info-icon"></i>
+                </div>
                 <!--DROPDOWN FILTERS-->
                 <div v-if="col.item.filter" class="cog p-2">
-                  <!--<i class="fa fa-cog" @click="openDropdowns['col' + i] = !openDropdowns['col' + i]"></i>-->
                   <div class="dropdown" :class="{'show': openDropdowns['col' + i]}">
                     <div class="dropdown-menu">
                       <div v-if="col.item.filter.type === 'search'">
@@ -99,13 +98,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="$c_items.length" v-for="(item, i) in $c_itemsCurrentPage" :key="i">
+          <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
             <td v-if="selectable" style="text-align: center;">
-              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="item.selected" @click.prevent.native="$_selectItem(item)"></b-form-checkbox>
+              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="item.selected"  ></b-form-checkbox>
             </td>
-            <td v-for="(col, j) in headerFields" :key="j" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
-              <div class="field" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
-              <div v-else class="field" v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
+            <td v-for="(col, j) in headerFields" :class="col.item.cellClass" v-if="col.display !== false" :key="j" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
+              <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
+              <div v-else :class="[col.item.class, 'field']" v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
             </td>
           </tr>
         </tbody>
@@ -113,8 +112,10 @@
         <tfoot v-if="$c_showTotal && $c_items.length">
           <tr>
             <td v-if="selectable" class="col-disable-bg"></td>
-            <td v-for="(col, i) in headerFields" :key="i" :style="(col.item.total && col.item.total.style) || col.item.style || ''" :class="{'col-disable-bg': !col.item.total}">
-              {{ col.item.total ? col.item.total.content($c_totals) : '' }}
+            <td v-for="(col, i) in headerFields" v-if="col.display !== false" :key="i" :style="(col.item.total && col.item.total.style) || col.item.style || ''" :class="{'col-disable-bg': !col.item.total}">
+              <template v-if="col.item.total">
+                <div v-html="col.item.total.content($c_totals)"></div>
+              </template>
             </td>
           </tr>
         </tfoot>
@@ -128,6 +129,16 @@
     <div class="space" v-if="showPagination"></div>
     <div class="row" v-if="showPagination">
       <opti-single-select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></opti-single-select>
+      <div class="col-md-auto" v-if="enableExport">
+        <download-excel
+              class   = "btn btn-default pointer-button"
+              :data   = "items"
+              :fields = "$c_exportTable"
+              type    = "csv"
+              :name   = "`${exportLabel}.csv`">
+              Download CSV
+        </download-excel>
+      </div>
       <div class="col-md-4 col-sm-12 ml-md-auto">
         <ul class="pagination justify-content-end unselectable">
           <li class="page-item">
@@ -177,6 +188,11 @@ export default {
     OptiSingleSelect,
   },
   created() {
+    this.tableRows = this.rows.find(row => row.selected);
+    if (!this.tableRows) {
+      this.rows[0].selected = true;
+      this.tableRows = this.rows[0];
+    }
     this.$emit('input', this.$c_selectedItems);
   },
 };
@@ -235,7 +251,7 @@ export default {
     vertical-align: middle;
     border-right: 1px solid #e1e6ef;
     border-bottom: none;
-    padding: 2px !important;
+    padding: 7px !important;
   }
   tr > td:last-child {
     border-right: none;
@@ -344,4 +360,27 @@ export default {
   .pointer-button {
     cursor: pointer;
   }
+</style>
+
+<style lang="scss">
+.datatable-wrapper {
+  .columns-dropdown {
+    .dropdown-menu {
+      min-width: 12rem;
+      max-height: 400px;
+      overflow-y: scroll;
+      .dropdown-header {
+        color: #151b1e;
+        background-color: #FFF;
+        padding: 5px 10px;
+        label.custom-checkbox {
+          margin-bottom: 0;
+          .custom-control-description {
+            line-height: 24px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

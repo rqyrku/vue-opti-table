@@ -7,7 +7,7 @@ export default {
     return !!this.headerFields.find(field => !!field.item.filter);
   },
   $c_totals() {
-    return Object.assign({}, ...this.headerFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + item[field.item.key], 0) })));
+    return Object.assign({}, ...this.headerFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(item[field.item.key]) : item[field.item.key]), 0) })));
   },
   // search
   $c_searchableFields() {
@@ -15,7 +15,7 @@ export default {
   },
   // selected
   $c_selectedItems() {
-    return this.$c_items.filter(item => item.selected);
+    return this.$c_items.filter(item => !!item.selected);
   },
   $c_areAllItemsSelected() { // $c_areAllItemsSelected
     return !this.$c_items.find(item => !item.selected);
@@ -109,7 +109,7 @@ export default {
   $c_exportTable() {
     const table = {};
     this.headerFields.forEach((field) => {
-      if (field.item.content) {
+      if (field.item.content && field.display !== false) {
         table[field.header.content] = field.item.key;
       }
     });
