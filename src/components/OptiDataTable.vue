@@ -249,7 +249,7 @@ export default {
     vertical-align: middle;
     border-right: 1px solid #e1e6ef;
     border-bottom: none;
-    padding: 7px !important;
+    padding: 2px !important;
   }
   tr > td:last-child {
     border-right: none;
