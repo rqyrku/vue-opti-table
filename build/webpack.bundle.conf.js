@@ -40,7 +40,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: path.join(__dirname, '..', "dist"),
     filename: jsFileName,
-    library: "VueOptimTable",
+    library: "VueOptiTable",
     libraryTarget: "umd"
   },
   plugins: [

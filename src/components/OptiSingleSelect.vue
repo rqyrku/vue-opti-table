@@ -4,9 +4,9 @@
       <div slot="button-content" class="placeholder" v-html="$c_placeholder"></div>
 
       <b-dropdown-item class="item"
-        v-for="(item, i) in list" :key="i"
+        v-for="(item, index) in list" :key="index"
         :class="{ 'active-item': item.selected }"
-        @click="$_itemClickAction(item)"
+        @click="$_itemClickAction(item, index)"
         v-html="item.content"
       ></b-dropdown-item>
 
@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     $_itemClickAction(item) {
-      this.list.forEach(item => (item.selected = false));
-      item.selected = true;
+      // this.list.forEach(item => (item.selected = false));
+      // item.selected = true;
       this.$emit('input', item);
       if (this.onClick) {
         this.onClick(item);

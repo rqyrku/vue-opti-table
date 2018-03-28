@@ -100,7 +100,7 @@
         <tbody>
           <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
             <td v-if="selectable" style="text-align: center;">
-              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="item.selected"  ></b-form-checkbox>
+              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="item.selected"></b-form-checkbox>
             </td>
             <td v-for="(col, j) in headerFields" :class="col.item.cellClass" v-if="col.display !== false" :key="j" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
               <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
@@ -186,12 +186,12 @@ export default {
     OptiSingleSelect,
   },
   created() {
-    this.tableRows = this.rows.find(row => row.selected);
-    if (!this.tableRows) {
-      this.rows[0].selected = true;
-      this.tableRows = this.rows[0];
-    }
-    this.$emit('input', this.$c_selectedItems);
+    // this.tableRows = this.rows.find(row => row.selected);
+    // if (!this.tableRows) {
+    //   this.rows[0].selected = true;
+    //   this.tableRows = this.rows[0];
+    // }
+    // this.$emit('input', this.$c_selectedItems);
   },
 };
 </script>
