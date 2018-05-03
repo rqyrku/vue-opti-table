@@ -115,4 +115,10 @@ export default {
     });
     return table;
   },
+  $c_shouldDisplayCol() {
+    const displayCols = [];
+    this.headerFields.forEach(header => {
+      this.tableModel.displayFields
+    })
+  },
 };

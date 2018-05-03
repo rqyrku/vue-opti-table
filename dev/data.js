@@ -1,5 +1,10 @@
 export default function () {
   return {
+    tableModel: {
+      selectedRows: [],
+      displayedColumns: [],
+      columnsOrder: [],
+    },
     table: {
       fields: [
         {
