@@ -15,13 +15,32 @@ export default {
   },
   // selected
   $c_selectedItems() {
-    return this.$c_items.filter(item => !!item.selected);
+    return this.localTableModel.selectedRows;
   },
   $c_areAllItemsSelected() { // $c_areAllItemsSelected
-    return !this.$c_items.find(item => !item.selected);
+    return this.$c_items.length === this.localTableModel.selectedRows.length;
   },
   $c_areAllItemsSelectedOnCurrentPage() {
-    return !this.$c_itemsCurrentPage.find(item => !item.selected);
+    let areAllItemsSelectedOnCurrentPage = '';
+    if (!this.localTableModel.selectedRows.length) {
+      areAllItemsSelectedOnCurrentPage = false;
+    } else {
+      this.localTableModel.selectedRows.forEach((selectedRow) => {
+        const result = this.$c_itemsCurrentPage.find(item => item === selectedRow);
+        if (!result) {
+          areAllItemsSelectedOnCurrentPage = false;
+        }
+      });
+    }
+    return areAllItemsSelectedOnCurrentPage;
+  },
+  $c_itemsCurrentPage() {
+    if (!this.$c_pagesInPagination) {
+      return this.$c_items;
+    }
+    const start = (this.currentPage - 1) * this.paginationSize;
+    const end = (start - 1) + this.paginationSize;
+    return this.$c_items.filter((item, i) => i >= start && i <= end);
   },
   // items
   $c_items() {
@@ -73,14 +92,6 @@ export default {
     return items;
   },
 
-  $c_itemsCurrentPage() {
-    if (!this.$c_pagesInPagination) {
-      return this.$c_items;
-    }
-    const start = (this.currentPage - 1) * this.paginationSize;
-    const end = (start - 1) + this.paginationSize;
-    return this.$c_items.filter((item, i) => i >= start && i <= end);
-  },
   // pages
   $c_pages() {
     return Math.floor(this.$c_items.length / this.paginationSize) + (this.$c_items.length % this.paginationSize && 1) || 1;
@@ -118,10 +129,28 @@ export default {
     });
     return table;
   },
-  $c_shouldDisplayCol() {
+  $c_shouldDisplayColumn() {
     const displayCols = [];
-    this.headerFields.forEach(header => {
-      this.tableModel.displayFields
-    })
+    this.headerFields.forEach((header) => {
+      const result = this.tableModel.displayColumns.find(column => column.item.key === header.item.key);
+      if (result) {
+        displayCols.push(true);
+      } else {
+        displayCols.push(false);
+      }
+    });
+    return displayCols;
+  },
+  $c_shouldSelectRow() {
+    const selectedRows = [];
+    this.items.forEach((item) => {
+      const result = this.tableModel.selectedRows.find(row => row === item);
+      if (result) {
+        selectedRows.push(true);
+      } else {
+        selectedRows.push(false);
+      }
+    });
+    return selectedRows;
   },
 };

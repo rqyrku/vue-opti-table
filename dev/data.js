@@ -2,7 +2,7 @@ export default function () {
   return {
     tableModel: {
       selectedRows: [],
-      displayedColumns: [],
+      displayColumns: [],
       columnsOrder: [],
     },
     table: {
@@ -658,10 +658,6 @@ export default function () {
           selected: false,
         },
       ],
-    },
-    tableModel: {
-      displayFields: [],
-      selectedItems: [],
     },
   };
 }

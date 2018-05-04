@@ -7,14 +7,18 @@
     <div class="space" v-if="$slots['top']"></div>
     <!--SHOW SEARCH-->
     <div class="row" v-if="showSearch">
+      <!-- SEARCH SLOT -->
       <slot name="search"></slot>
+
+      <!-- TOGGLE DISPLAY FIELDS DROPDOWN -->
       <div class="col-xl-4 col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
         <b-input-group>
           <b-form-input v-model="models.search"  placeholder="Search..." @focus.native="$event.target.select()"></b-form-input>
           <b-input-group-button slot="right" v-if="enableColumns">
             <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
               <b-dropdown-header v-for="(col, i) in headerFields" :key="i" v-if="col.item.content">
-                <b-form-checkbox :checked="$_shouldDisplayField(col)" @change="$_selectColumn(col)">{{ col.header.content }}</b-form-checkbox>
+                <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
+                <b-dd-divider></b-dd-divider>
               </b-dropdown-header>
             </b-dropdown>
           </b-input-group-button>
@@ -42,7 +46,7 @@
             <th v-if="selectable" style="text-align: center;">
               <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
             </th>
-            <th v-for="(col, i) in headerFields" v-if="$c_shouldDisplayCol[i]" :key="i" :style="col.header.style || ''">
+            <th v-for="(col, i) in headerFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
               <div class="header">
                 <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
                   <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
@@ -100,9 +104,9 @@
         <tbody>
           <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
             <td v-if="selectable" style="text-align: center;">
-              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" @click="$_selectItem(item)"></b-form-checkbox>
+              <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;" @change="$_selectItem(item)"></b-form-checkbox>
             </td>
-            <td v-for="(col, j) in headerFields" :class="col.item.cellClass" v-if="col.display !== false" :key="j" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
+            <td v-for="(col, j) in headerFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
               <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
               <div v-else :class="[col.item.class, 'field']" v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
             </td>
@@ -112,10 +116,12 @@
         <tfoot v-if="$c_showTotal && $c_items.length">
           <tr>
             <td v-if="selectable" class="col-disable-bg"></td>
-            <td v-for="(col, i) in headerFields" v-if="col.display !== false" :key="i" :style="(col.item.total && col.item.total.style) || col.item.style || ''" :class="{'col-disable-bg': !col.item.total}">
-              <template v-if="col.item.total">
-                <div v-html="col.item.total.content($c_totals)"></div>
-              </template>
+            <td v-for="(col, i) in headerFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
+                :style="(col.item.total && col.item.total.style) || col.item.style || ''"
+                :class="{'col-disable-bg': !col.item.total}">
+                <template v-if="col.item.total">
+                  <div v-html="col.item.total.content($c_totals)"></div>
+                </template>
             </td>
           </tr>
         </tfoot>
@@ -127,6 +133,7 @@
     </div>
     <!--PAGINATION-->
     <div class="space" v-if="showPagination"></div>
+
     <div class="row" v-if="showPagination">
       <vue-opti-select class="col-md-2 col-sm-12" v-model="paginationSize" :list="rows"></vue-opti-select>
       <div class="col-md-auto" v-if="enableExport">
@@ -190,7 +197,9 @@ export default {
     event: 'click',
   },
   created() {
-    this.tableModel.displayFields = this.headerFields.filter(field => field.display !== false);
+    this.localTableModel = this.tableModel;
+    this.localTableModel.displayColumns = this.headerFields.filter(field => field.display !== false);
+    this.$emit('click', this.localTableModel);
   },
 };
 </script>
@@ -328,6 +337,11 @@ export default {
   .pagination {
     margin-bottom: 0px;
   }
+
+  .dropdown-divider {
+    margin: 0 !important;
+  }
+
 </style>
 
 <style scoped>
