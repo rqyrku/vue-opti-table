@@ -42,7 +42,7 @@
             <th v-if="selectable" style="text-align: center;">
               <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
             </th>
-            <th v-for="(col, i) in headerFields" v-if="col.display !== false" :key="i" :style="col.header.style || ''">
+            <th v-for="(col, i) in headerFields" v-if="$c_shouldDisplayCol[i]" :key="i" :style="col.header.style || ''">
               <div class="header">
                 <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
                   <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
