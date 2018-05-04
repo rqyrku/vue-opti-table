@@ -3,7 +3,7 @@ export default function () {
     table: {
       fields: [
         {
-          header: { content: 'Name', style: '' },
+          header: { content: 'Name', style: '', info: 'This are the names of the campaigns' },
           item: {
             key: 'name',
             content: item => item.name,
@@ -11,7 +11,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'Status', style: '' },
@@ -22,7 +21,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'Duplicate', style: '' },
@@ -33,7 +31,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'Traffic Source', style: '' },
@@ -44,7 +41,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'Tracker', style: '' },
@@ -55,7 +51,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'User ID', style: '' },
@@ -66,7 +61,7 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
+          display: false,
         },
         {
           header: { content: 'Bid', style: '' },
@@ -77,7 +72,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
         {
           header: { content: 'Bid Type', style: '' },
@@ -88,7 +82,6 @@ export default function () {
             searchable: true,
             style: { textAlign: 'center' },
           },
-          display: true,
         },
       ],
       items: [
@@ -660,6 +653,10 @@ export default function () {
           selected: false,
         },
       ],
+    },
+    tableModel: {
+      displayFields: [],
+      selectedItems: [],
     },
   };
 }

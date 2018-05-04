@@ -1,5 +1,5 @@
 export default {
-  selectable: { type: Boolean },
+  selectable: { type: Boolean, default: false },
   hover: { type: Boolean, default: false },
   headerFields: { type: Array, required: true },
   items: { type: Array, required: true },
@@ -13,5 +13,7 @@ export default {
   enableExport: { type: Boolean, default: true },
   exportLabel: { type: String, default: 'export' },
   enableColumns: { type: Boolean, default: true },
+  enableColumnsLabel: { type: String, default: 'Columns' },
   defaultRows: { type: Number, default: 10 },
+  tableModel: null,
 };

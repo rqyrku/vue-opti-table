@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-2">
-    <vue-opti-table selectable :header-fields="table.fields" :items="table.items">
+    <vue-opti-table selectable v-model="tableModel" :header-fields="table.fields" :items="table.items">
       
     </vue-opti-table>
   </div>
@@ -9,6 +9,8 @@
 <script>
   import Vue from 'vue';
   import BootstrapVue from 'bootstrap-vue';
+  import 'bootstrap/dist/css/bootstrap.css';
+  import 'bootstrap-vue/dist/bootstrap-vue.css';
   import VueOptiTable from '../src/index';
   import data from './data';
   Vue.use(BootstrapVue);

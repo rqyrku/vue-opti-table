@@ -16,7 +16,7 @@ export default {
     }
   },
   $_selectColumn(col) {
-    col.display = !col.display;
+    return this.tableModel.displayFields.filter(field => field.item.key === col.item.key);
   },
   $_changePageAction(page) {
     this.currentPage = page;
@@ -30,13 +30,20 @@ export default {
     this.$emit('input', this.$c_selectedItems);
   },
   $_selectItem(item) {
-    item.selected = !item.selected;
-    this.$emit('input', this.$c_selectedItems);
+    this.tableModel.selectedItems.push(item);
+    this.$emit('click', this.$c_selectedItems);
   },
   $_selectAllItemsAction(v) {
     this.selectedAll = v;
     this.$c_items.forEach(item => (item.selected = v));
     this.models.selectAllCheckbox = v;
     this.$emit('input', this.$c_selectedItems);
+  },
+  $_shouldDisplayField(column) {
+    const displayField = this.tableModel.displayFields.find(field => field.item.key === column.item.key);
+    if (displayField) {
+      return true;
+    }
+    return false;
   },
 };

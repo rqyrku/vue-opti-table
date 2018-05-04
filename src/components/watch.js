@@ -8,4 +8,7 @@ export default { // eslint-disable-next-line
   tableRows() {
     this.currentPage = 1;
   },
+  defaultRows(newVal) {
+    this.paginationSize = newVal;
+  },
 };

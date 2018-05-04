@@ -72,18 +72,20 @@ export default {
     });
     return items;
   },
+
   $c_itemsCurrentPage() {
     if (!this.$c_pagesInPagination) {
       return this.$c_items;
     }
-    const start = (this.currentPage - 1) * this.tableRows.value;
-    const end = (start - 1) + this.tableRows.value;
+    const start = (this.currentPage - 1) * this.paginationSize;
+    const end = (start - 1) + this.paginationSize;
     return this.$c_items.filter((item, i) => i >= start && i <= end);
   },
   // pages
   $c_pages() {
-    return Math.floor(this.$c_items.length / this.tableRows.value) + (this.$c_items.length % this.tableRows.value && 1) || 1;
+    return Math.floor(this.$c_items.length / this.paginationSize) + (this.$c_items.length % this.paginationSize && 1) || 1;
   },
+
   $c_pagesInPagination() {
     const itemsNr = 5;
     const half = (itemsNr - 1) / 2;
@@ -106,6 +108,7 @@ export default {
     }
     return pages;
   },
+
   $c_exportTable() {
     const table = {};
     this.headerFields.forEach((field) => {

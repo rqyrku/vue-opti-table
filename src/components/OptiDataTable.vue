@@ -13,8 +13,8 @@
           <b-form-input v-model="models.search"  placeholder="Search..." @focus.native="$event.target.select()"></b-form-input>
           <b-input-group-button slot="right" v-if="enableColumns">
             <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
-              <b-dropdown-header v-for="(col, i) in headerFields" :key="i" v-if="col.item.key !== 'actions'">
-                <b-form-checkbox v-model="col.display" @click.prevent.native="$_selectColumn(col)">{{col.header.content}}</b-form-checkbox>
+              <b-dropdown-header v-for="(col, i) in headerFields" :key="i" v-if="col.item.content">
+                <b-form-checkbox :checked="$_shouldDisplayField(col)" @change="$_selectColumn(col)">{{ col.header.content }}</b-form-checkbox>
               </b-dropdown-header>
             </b-dropdown>
           </b-input-group-button>
@@ -51,7 +51,7 @@
                 </div>
                 <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
                   <span v-html="col.header.content"></span>
-                  <i v-if="col.header.info" v-b-tooltip="{hover: true, html: true, title: col.header.info, boundary: 'window'}" class="fa fa-info-circle info-icon"></i>
+                  <i v-if="col.header.info" v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }" class="fa fa-info-circle info-icon"></i>
                 </div>
                 <!--DROPDOWN FILTERS-->
                 <div v-if="col.item.filter" class="cog p-2">
@@ -100,7 +100,7 @@
         <tbody>
           <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
             <td v-if="selectable" style="text-align: center;">
-              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="item.selected"></b-form-checkbox>
+              <b-form-checkbox style="padding: 10px; padding-right: 6px; margin: 0px;" @click="$_selectItem(item)"></b-form-checkbox>
             </td>
             <td v-for="(col, j) in headerFields" :class="col.item.cellClass" v-if="col.display !== false" :key="j" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
               <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
@@ -128,10 +128,10 @@
     <!--PAGINATION-->
     <div class="space" v-if="showPagination"></div>
     <div class="row" v-if="showPagination">
-      <opti-single-select class="col-md-2 col-sm-12" v-model="tableRows" :list="rows"></opti-single-select>
+      <vue-opti-select class="col-md-2 col-sm-12" v-model="paginationSize" :list="rows"></vue-opti-select>
       <div class="col-md-auto" v-if="enableExport">
         <download-excel
-              class   = "btn btn-default pointer-button"
+              class   = "btn btn-secondary pointer-button"
               :data   = "items"
               :fields = "$c_exportTable"
               type    = "csv"
@@ -149,7 +149,7 @@
           </li>
           <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}" class="page-item"><a :class="{'btn-bg-color': currentPage === page}" class="page-link" @click="$_changePageAction(page)">{{ page }}</a></li>
           <li class="page-item">
-            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{$c_pages}}
+            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{ $c_pages }}
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -167,7 +167,7 @@
 
 <script>
 import JsonExcel from 'vue-json-excel';
-import OptiSingleSelect from './OptiSingleSelect';
+import { VueOptiSelect } from 'vue-opti-select';
 import props from './props';
 import data from './data';
 import computed from './computed';
@@ -183,15 +183,14 @@ export default {
   watch,
   components: {
     downloadExcel: JsonExcel,
-    OptiSingleSelect,
+    VueOptiSelect,
+  },
+  model: {
+    prop: 'tableModel',
+    event: 'click',
   },
   created() {
-    // this.tableRows = this.rows.find(row => row.selected);
-    // if (!this.tableRows) {
-    //   this.rows[0].selected = true;
-    //   this.tableRows = this.rows[0];
-    // }
-    // this.$emit('input', this.$c_selectedItems);
+    this.tableModel.displayFields = this.headerFields.filter(field => field.display !== false);
   },
 };
 </script>
@@ -374,7 +373,7 @@ export default {
         label.custom-checkbox {
           margin-bottom: 0;
           .custom-control-description {
-            line-height: 24px;
+            line-height: 20px;
           }
         }
       }
