@@ -37,8 +37,9 @@ export default {
 
   // Select Rows Section
   $_selectAllItemsCurrentPageAction() {
+    this.$c_itemsCurrentPage.forEach(item => this.localTableModel.selectedRows = this.localTableModel.selectedRows.filter(row => row === item));
+    if (!this.models.selectAllCheckbox) this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_itemsCurrentPage);
     this.models.selectAllCheckbox = !this.models.selectAllCheckbox;
-    this.$c_itemsCurrentPage.forEach(item => this.localTableModel.selectedRows.push(item));
     this.$emit('click', this.localTableModel);
   },
   $_selectItem(row) {
@@ -52,8 +53,12 @@ export default {
   },
   $_selectAllItemsAction(v) {
     this.selectedAll = v;
-    this.$c_items.forEach(item => (item.selected = v));
+    if (v) {
+      this.$c_items.forEach(item => this.localTableModel.selectedRows.push(item));
+    } else {
+      this.localTableModel.selectedRows = [];
+    }
     this.models.selectAllCheckbox = v;
-    this.$emit('input', this.$c_selectedItems);
+    this.$emit('click', this.localTableModel);
   },
 };

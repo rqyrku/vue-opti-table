@@ -25,7 +25,6 @@
     "url": "git+https://github.com/rqyrku/vue-opti-table"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta",
     "vue-clipboard2": "0.0.8",
     "vue-json-excel": "^0.1.7",
     "vue-opti-select": "^1.2.3"

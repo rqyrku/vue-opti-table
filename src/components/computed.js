@@ -21,18 +21,19 @@ export default {
     return this.$c_items.length === this.localTableModel.selectedRows.length;
   },
   $c_areAllItemsSelectedOnCurrentPage() {
-    let areAllItemsSelectedOnCurrentPage = '';
-    if (!this.localTableModel.selectedRows.length) {
-      areAllItemsSelectedOnCurrentPage = false;
-    } else {
-      this.localTableModel.selectedRows.forEach((selectedRow) => {
-        const result = this.$c_itemsCurrentPage.find(item => item === selectedRow);
-        if (!result) {
-          areAllItemsSelectedOnCurrentPage = false;
-        }
-      });
+    // continue only if number of items selected = number of current page items
+    if (!this.localTableModel.selectedRows.length ||
+      this.localTableModel.selectedRows.length !== this.$c_itemsCurrentPage.length) {
+      return false;
     }
-    return areAllItemsSelectedOnCurrentPage;
+    // check if items selected are the same as the items on current page
+    this.$c_itemsCurrentPage.forEach((item) => {
+      const result = this.localTableModel.selectedRows.find(selectedRow => selectedRow === item);
+      if (!result) {
+        return false;
+      }
+    });
+    return true;
   },
   $c_itemsCurrentPage() {
     if (!this.$c_pagesInPagination) {
@@ -53,11 +54,15 @@ export default {
       if (this.sortOrder === 'asc') {
         if (typeof items[0][this.sortField] === 'number') {
           items.sort((a, b) => a[this.sortField] - b[this.sortField]);
+        } else if (typeof this.items[0][this.sortField] === 'boolean') {
+          items.sort((a, b) => (a[this.sortField] === b[this.sortField])? 0 : a[this.sortField]? -1 : 1); // eslint-disable-line
         } else {
           items.sort((a, b) => a[this.sortField].localeCompare(b[this.sortField]));
         }
       } else if (typeof this.items[0][this.sortField] === 'number') {
         items.sort((a, b) => b[this.sortField] - a[this.sortField]);
+      } else if (typeof this.items[0][this.sortField] === 'boolean') {
+        items.sort((a, b) => (a[this.sortField] === b[this.sortField])? 0 : a[this.sortField]? 1 : -1); // eslint-disable-line
       } else {
         items.sort((a, b) => (b[this.sortField].localeCompare(a[this.sortField])));
       }
@@ -143,7 +148,7 @@ export default {
   },
   $c_shouldSelectRow() {
     const selectedRows = [];
-    this.items.forEach((item) => {
+    this.$c_itemsCurrentPage.forEach((item) => {
       const result = this.tableModel.selectedRows.find(row => row === item);
       if (result) {
         selectedRows.push(true);
