@@ -15,5 +15,6 @@ export default function () {
     openDropdowns: {},
     paginationSize: this.defaultRows,
     localTableModel: {},
+    localHeaderFields: this.headerFields,
   };
 }

@@ -27,7 +27,8 @@
   "dependencies": {
     "vue-clipboard2": "0.0.8",
     "vue-json-excel": "^0.1.7",
-    "vue-opti-select": "^1.2.3"
+    "vue-opti-select": "^1.2.3",
+    "vuedraggable": "^2.16.0"
   },
   "license": "MIT",
   "devDependencies": {

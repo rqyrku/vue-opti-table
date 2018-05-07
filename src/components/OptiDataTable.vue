@@ -16,10 +16,19 @@
           <b-form-input v-model="models.search"  placeholder="Search..." @focus.native="$event.target.select()"></b-form-input>
           <b-input-group-button slot="right" v-if="enableColumns">
             <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
-              <b-dropdown-header v-for="(col, i) in headerFields" :key="i" v-if="col.item.content">
-                <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
-                <b-dd-divider></b-dd-divider>
-              </b-dropdown-header>
+              <div class="card">
+                <ul class="list-group list-group-flush">
+                  <draggable v-model="localHeaderFields">
+                    <li v-for="(col, i) in localHeaderFields" :key="i" v-if="col.item.content" class="list-group-item list-group-item-action justify-content-between">
+                      <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
+                      <span class="badge badge-default badge-pill">{{ i + 1 }}</span>
+                    </li>
+                  </draggable>
+                </ul>
+                <!-- <div class="card-footer">
+                  <button type="button" class="btn btn-outline-primary mx-auto">Save Settings</button>
+                </div> -->
+              </div>
             </b-dropdown>
           </b-input-group-button>
         </b-input-group>
@@ -46,7 +55,7 @@
             <th v-if="selectable" style="text-align: center;">
               <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
             </th>
-            <th v-for="(col, i) in headerFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
+            <th v-for="(col, i) in localHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
               <div class="header">
                 <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
                   <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
@@ -106,7 +115,7 @@
             <td v-if="selectable" style="text-align: center;">
               <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;" @change="$_selectItem(item)"></b-form-checkbox>
             </td>
-            <td v-for="(col, j) in headerFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
+            <td v-for="(col, j) in localHeaderFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
               <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
               <div v-else :class="[col.item.class, 'field']" v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
             </td>
@@ -116,7 +125,7 @@
         <tfoot v-if="$c_showTotal && $c_items.length">
           <tr>
             <td v-if="selectable" class="col-disable-bg"></td>
-            <td v-for="(col, i) in headerFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
+            <td v-for="(col, i) in localHeaderFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
                 :style="(col.item.total && col.item.total.style) || col.item.style || ''"
                 :class="{'col-disable-bg': !col.item.total}">
                 <template v-if="col.item.total">
@@ -175,6 +184,7 @@
 <script>
 import JsonExcel from 'vue-json-excel';
 import { VueOptiSelect } from 'vue-opti-select';
+import draggable from 'vuedraggable';
 import props from './props';
 import data from './data';
 import computed from './computed';
@@ -191,6 +201,7 @@ export default {
   components: {
     downloadExcel: JsonExcel,
     VueOptiSelect,
+    draggable,
   },
   model: {
     prop: 'tableModel',
@@ -198,7 +209,7 @@ export default {
   },
   created() {
     this.localTableModel = this.tableModel;
-    this.localTableModel.displayColumns = this.headerFields.filter(field => field.display !== false);
+    this.localTableModel.displayColumns = this.localHeaderFields.filter(field => field.display !== false);
     this.$emit('click', this.localTableModel);
   },
 };
@@ -377,9 +388,10 @@ export default {
 .datatable-wrapper {
   .columns-dropdown {
     .dropdown-menu {
-      min-width: 12rem;
+      min-width: 13rem;
       max-height: 400px;
       overflow-y: scroll;
+      padding: 0;
       .dropdown-header {
         color: #151b1e;
         background-color: #FFF;
@@ -390,6 +402,12 @@ export default {
             line-height: 20px;
           }
         }
+      }
+      label.custom-control {
+        margin-bottom: 0;
+      }
+      .list-group-item {
+        padding: .5rem 1.25rem;
       }
     }
   }

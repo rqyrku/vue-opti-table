@@ -1,17 +1,17 @@
 export default {
   // total
   $c_showTotal() {
-    return !!this.headerFields.find(field => !!field.item.total);
+    return !!this.localHeaderFields.find(field => !!field.item.total);
   },
   $c_showFilters() {
-    return !!this.headerFields.find(field => !!field.item.filter);
+    return !!this.localHeaderFields.find(field => !!field.item.filter);
   },
   $c_totals() {
-    return Object.assign({}, ...this.headerFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(item[field.item.key]) : item[field.item.key]), 0) })));
+    return Object.assign({}, ...this.localHeaderFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(item[field.item.key]) : item[field.item.key]), 0) })));
   },
   // search
   $c_searchableFields() {
-    return this.headerFields.filter(field => field.item.searchable).map(field => field.item.key);
+    return this.localHeaderFields.filter(field => field.item.searchable).map(field => field.item.key);
   },
   // selected
   $c_selectedItems() {
@@ -21,19 +21,21 @@ export default {
     return this.$c_items.length === this.localTableModel.selectedRows.length;
   },
   $c_areAllItemsSelectedOnCurrentPage() {
-    // continue only if number of items selected = number of current page items
+    /** Continue only if number of items selected is equeal or
+     * greater than the number of current page items
+     */
     if (!this.localTableModel.selectedRows.length ||
-      this.localTableModel.selectedRows.length !== this.$c_itemsCurrentPage.length) {
+      this.localTableModel.selectedRows.length < this.$c_itemsCurrentPage.length) {
       return false;
     }
-    // check if items selected are the same as the items on current page
-    this.$c_itemsCurrentPage.forEach((item) => {
-      const result = this.localTableModel.selectedRows.find(selectedRow => selectedRow === item);
-      if (!result) {
-        return false;
-      }
-    });
-    return true;
+
+    /**
+     * Returns TRUE if the first specified array contains all elements
+     * from the second one. FALSE otherwise.
+     *
+     * @returns {boolean}
+     */
+    return this.localTableModel.selectedRows.every(value => this.$c_itemsCurrentPage.indexOf(value) >= 0);
   },
   $c_itemsCurrentPage() {
     if (!this.$c_pagesInPagination) {
@@ -87,7 +89,7 @@ export default {
       });
     }
     // handle filters
-    this.headerFields.forEach((field) => {
+    this.localHeaderFields.forEach((field) => {
       if (field.item.filter) {
         if (field.item.filter.type === 'search' && this.filterModels[field.item.key] && this.filterModels[field.item.key].length) {
           items = items.filter(item => (item[field.item.key] || '').toString().toLowerCase().includes(this.filterModels[field.item.key].toLowerCase()));
@@ -127,7 +129,7 @@ export default {
 
   $c_exportTable() {
     const table = {};
-    this.headerFields.forEach((field) => {
+    this.localHeaderFields.forEach((field) => {
       if (field.item.content && field.display !== false) {
         table[field.header.content] = field.item.key;
       }
@@ -136,7 +138,7 @@ export default {
   },
   $c_shouldDisplayColumn() {
     const displayCols = [];
-    this.headerFields.forEach((header) => {
+    this.localHeaderFields.forEach((header) => {
       const result = this.tableModel.displayColumns.find(column => column.item.key === header.item.key);
       if (result) {
         displayCols.push(true);

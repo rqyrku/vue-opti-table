@@ -42,6 +42,7 @@ export default {
     this.models.selectAllCheckbox = !this.models.selectAllCheckbox;
     this.$emit('click', this.localTableModel);
   },
+
   $_selectItem(row) {
     const isSelected = this.localTableModel.selectedRows.find(item => item === row);
     if (isSelected) {
@@ -51,12 +52,14 @@ export default {
     }
     this.$emit('click', this.localTableModel);
   },
+
   $_selectAllItemsAction(v) {
     this.selectedAll = v;
+    // Remove all selected items
+    this.localTableModel.selectedRows = [];
+    // If choosed to select all add all items as selected
     if (v) {
-      this.$c_items.forEach(item => this.localTableModel.selectedRows.push(item));
-    } else {
-      this.localTableModel.selectedRows = [];
+      this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_items);
     }
     this.models.selectAllCheckbox = v;
     this.$emit('click', this.localTableModel);
