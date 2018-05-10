@@ -5,7 +5,7 @@
       <slot name="top"></slot>
     </div>
     <div class="space" v-if="$slots['top']"></div>
-    <!--SHOW SEARCH-->
+    <!-- SHOW SEARCH -->
     <div class="row" v-if="showSearch">
       <!-- SEARCH SLOT -->
       <slot name="search"></slot>
@@ -17,25 +17,27 @@
           <b-input-group-button slot="right" v-if="enableColumns">
             <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
               <div class="card">
+                <div class="card-header text-center">
+                  <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                </div>
                 <ul class="list-group list-group-flush">
                   <draggable v-model="localHeaderFields">
-                    <li v-for="(col, i) in localHeaderFields" :key="i" v-if="col.item.content" class="list-group-item list-group-item-action justify-content-between">
+                    <li v-for="(col, i) in localHeaderFields" :key="i" v-if="!col.item.slot" class="list-group-item list-group-item-action justify-content-between">
                       <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
-                      <span class="badge badge-default badge-pill">{{ i + 1 }}</span>
+                      <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
                     </li>
                   </draggable>
                 </ul>
-                <!-- <div class="card-footer">
-                  <button type="button" class="btn btn-outline-primary mx-auto">Save Settings</button>
-                </div> -->
               </div>
             </b-dropdown>
           </b-input-group-button>
         </b-input-group>
       </div>
+      <!-- END TOGGLE DISPLAY FIELDS DROPDOWN -->
     </div>
+    <!-- END SHOW SEARCH-->
     <div class="space" v-if="showSearch"></div>
-    <!--SELECT ALL-->
+    <!--SELECT ALL OPTION -->
     <div class="selectAll" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
       <span v-if="$c_areAllItemsSelected">
         <span>All {{ $c_items.length }} {{ selectLabel }} selected.</span>
@@ -46,7 +48,8 @@
         <span @click="$_selectAllItemsAction(true)" style="text-decoration: underline; cursor: pointer;">Select all {{ $c_items.length }} {{ selectLabel }}</span>
       </span>
     </div>
-    <!--TABLE-->
+    <!-- END SELECT ALL OPTION -->
+    <!--TABLE -->
     <div class="table-holder">
       <table :class="[{'table-hover': hover}, 'table table-striped']">
         <!--ALL CHECKBOX & TABLE HEADERS-->
@@ -67,45 +70,6 @@
                   <i v-if="col.header.info" v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }" class="fa fa-info-circle info-icon"></i>
                 </div>
                 <!--DROPDOWN FILTERS-->
-                <div v-if="col.item.filter" class="cog p-2">
-                  <div class="dropdown" :class="{'show': openDropdowns['col' + i]}">
-                    <div class="dropdown-menu">
-                      <div v-if="col.item.filter.type === 'search'">
-                        <div class="row m-0">
-                          <div class="col-md-12 p-2">
-                            <input v-model="filterModels[col.item.key]" type="text" class="form-control search" placeholder="Search..." />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="filter" v-else-if="col.item.filter.type === 'number'">
-                        <div class="row m-0">
-                          <div class="col-md-12 pl-2 pt-2 pr-2">
-                            <select v-model="filterModels[col.item.key]" class="form-control">
-                              <option value="less">Less</option>
-                              <option value="less_equal">Less or Equal</option>
-                              <option value="greater">Greater</option>
-                              <option value="greater_equal">Greater or Equal</option>
-                              <option value="equal">Equal</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row m-0">
-                          <div class="col-md-12 pl-2 pt-2 pr-2">
-                            <input type="number" class="form-control" :placeholder="filterModels[col.item.key] === 'equal' ? 'With...' : 'Than...'" />
-                          </div>
-                        </div>
-                        <div class="row m-2 pr-md-2">
-                          <div class="col-md-6 p-0 pb-xs-2">
-                            <button class="btn btn-secondary w-100 mr-md-2">Clear</button>
-                          </div>
-                          <div class="col-md-6 p-0">
-                            <button class="btn btn-success w-100 ml-md-2">Apply</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </th>
           </tr>
@@ -115,8 +79,10 @@
             <td v-if="selectable" style="text-align: center;">
               <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;" @change="$_selectItem(item)"></b-form-checkbox>
             </td>
-            <td v-for="(col, j) in localHeaderFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
-              <div :class="[col.item.class, 'field']" v-if="col.item.slot"><slot :name="col.item.slot" :item="item" :i="i"></slot></div>
+            <td v-for="(col, j) in $_sortedHeaderFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
+              <div :class="[col.item.class, 'field']" v-if="col.item.slot">
+                <slot :name="col.item.slot" :item="item" :i="i"></slot>
+              </div>
               <div v-else :class="[col.item.class, 'field']" v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
             </td>
           </tr>
@@ -209,7 +175,13 @@ export default {
   },
   created() {
     this.localTableModel = this.tableModel;
-    this.localTableModel.displayColumns = this.localHeaderFields.filter(field => field.display !== false);
+    if (window.localStorage.getItem(this.name)) {
+      this.localTableModel.displayColumns = JSON.parse(window.localStorage.getItem(this.name)).displayColumns;
+      this.localHeaderFields = JSON.parse(window.localStorage.getItem(this.name)).columnsOrder;
+    } else {
+      this.localHeaderFields = this.headerFields;
+      this.localTableModel.displayColumns = this.localHeaderFields.filter(field => field.display !== false);
+    }
     this.$emit('click', this.localTableModel);
   },
 };
@@ -388,7 +360,7 @@ export default {
 .datatable-wrapper {
   .columns-dropdown {
     .dropdown-menu {
-      min-width: 13rem;
+      min-width: 13.5rem;
       max-height: 400px;
       overflow-y: scroll;
       padding: 0;

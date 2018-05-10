@@ -64,4 +64,20 @@ export default {
     this.models.selectAllCheckbox = v;
     this.$emit('click', this.localTableModel);
   },
+
+  $_saveSettings() {
+    window.localStorage.setItem(this.name, JSON.stringify(this.localTableModel));
+  },
+
+  $_get(obj, key) {
+    if (key.includes('.')) {
+      return key.split('.').reduce((acc, part) => {
+        if (acc) {
+          return acc[part];
+        }
+        return undefined;
+      }, obj);
+    }
+    return obj[key];
+  },
 };

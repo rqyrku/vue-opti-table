@@ -11,4 +11,8 @@ export default { // eslint-disable-next-line
   defaultRows(newVal) {
     this.paginationSize = newVal;
   },
+  localHeaderFields(newVal) {
+    this.localTableModel.columnsOrder = newVal;
+    this.$emit('click', this.localTableModel);
+  },
 };

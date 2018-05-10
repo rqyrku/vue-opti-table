@@ -52,21 +52,22 @@ export default {
       return items;
     }
     // handle sort
-    if (this.sortKey && typeof items[0][this.sortField] !== 'undefined') {
+
+    if (this.sortKey && typeof this.$_get(items[0], this.sortField) !== 'undefined') {
       if (this.sortOrder === 'asc') {
-        if (typeof items[0][this.sortField] === 'number') {
-          items.sort((a, b) => a[this.sortField] - b[this.sortField]);
-        } else if (typeof this.items[0][this.sortField] === 'boolean') {
-          items.sort((a, b) => (a[this.sortField] === b[this.sortField])? 0 : a[this.sortField]? -1 : 1); // eslint-disable-line
+        if (typeof this.$_get(items[0], this.sortField) === 'number') {
+          items.sort((a, b) => this.$_get(a, this.sortField) - this.$_get(b, this.sortField));
+        } else if (typeof this.$_get(items[0], this.sortField) === 'boolean') {
+          items.sort((a, b) => (this.$_get(a, this.sortField) === this.$_get(b, this.sortField))? 0 : this.$_get(a, this.sortField)? -1 : 1); // eslint-disable-line
         } else {
-          items.sort((a, b) => a[this.sortField].localeCompare(b[this.sortField]));
+          items.sort((a, b) => this.$_get(a, this.sortField).localeCompare(this.$_get(b, this.sortField)));
         }
-      } else if (typeof this.items[0][this.sortField] === 'number') {
-        items.sort((a, b) => b[this.sortField] - a[this.sortField]);
-      } else if (typeof this.items[0][this.sortField] === 'boolean') {
-        items.sort((a, b) => (a[this.sortField] === b[this.sortField])? 0 : a[this.sortField]? 1 : -1); // eslint-disable-line
+      } else if (typeof this.$_get(items[0], this.sortField) === 'number') {
+        items.sort((a, b) => this.$_get(b, this.sortField) - this.$_get(a, this.sortField));
+      } else if (typeof this.$_get(items[0], this.sortField) === 'boolean') {
+        items.sort((a, b) => (this.$_get(a, this.sortField) === this.$_get(b, this.sortField))? 0 : this.$_get(a, this.sortField)? 1 : -1); // eslint-disable-line
       } else {
-        items.sort((a, b) => (b[this.sortField].localeCompare(a[this.sortField])));
+        items.sort((a, b) => (this.$_get(b, this.sortField).localeCompare(this.$_get(a, this.sortField))));
       }
     }
     // handle search
@@ -89,13 +90,22 @@ export default {
       });
     }
     // handle filters
-    this.localHeaderFields.forEach((field) => {
-      if (field.item.filter) {
-        if (field.item.filter.type === 'search' && this.filterModels[field.item.key] && this.filterModels[field.item.key].length) {
-          items = items.filter(item => (item[field.item.key] || '').toString().toLowerCase().includes(this.filterModels[field.item.key].toLowerCase()));
-        }
-      }
-    });
+    // this.localHeaderFields.forEach((field) => {
+    //   let content = field.item.key;
+    //   if (field.item.key.includes('.')) {
+    //     content = field.item.key.split('.').reduce((acc, part) => {
+    //       if (acc) {
+    //         return acc[part];
+    //       }
+    //       return undefined;
+    //     }, field);
+    //   }
+    //   if (field.item.filter) {
+    //     if (field.item.filter.type === 'search' && this.filterModels[content] && this.filterModels[content].length) {
+    //       items = items.filter(item => (item[content] || '').toString().toLowerCase().includes(this.filterModels[content].toLowerCase()));
+    //     }
+    //   }
+    // });
     return items;
   },
 
@@ -148,6 +158,7 @@ export default {
     });
     return displayCols;
   },
+
   $c_shouldSelectRow() {
     const selectedRows = [];
     this.$c_itemsCurrentPage.forEach((item) => {
@@ -159,5 +170,16 @@ export default {
       }
     });
     return selectedRows;
+  },
+
+  $_sortedHeaderFields() {
+    const sortedCols = [];
+    this.localHeaderFields.forEach((header) => {
+      const result = this.headerFields.find(column => column.item.key === header.item.key);
+      if (result) {
+        sortedCols.push(result);
+      }
+    });
+    return sortedCols;
   },
 };

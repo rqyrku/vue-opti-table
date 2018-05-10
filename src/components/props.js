@@ -1,4 +1,5 @@
 export default {
+  name: { type: String, required: true },
   selectable: { type: Boolean, default: false },
   hover: { type: Boolean, default: false },
   headerFields: { type: Array, required: true },
