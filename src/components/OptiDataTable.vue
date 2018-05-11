@@ -22,7 +22,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <draggable v-model="localHeaderFields">
-                    <li v-for="(col, i) in localHeaderFields" :key="i" v-if="!col.item.slot" class="list-group-item list-group-item-action justify-content-between">
+                    <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content" class="list-group-item d-flex justify-content-between align-items-center">
                       <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
                       <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
                     </li>
@@ -79,7 +79,7 @@
             <td v-if="selectable" style="text-align: center;">
               <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;" @change="$_selectItem(item)"></b-form-checkbox>
             </td>
-            <td v-for="(col, j) in $_sortedHeaderFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
+            <td v-for="(col, j) in $c_sortedHeaderFields" :class="col.item.cellClass" :key="j" v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''" @click="col.item.onClick && col.item.onClick(item, i)">
               <div :class="[col.item.class, 'field']" v-if="col.item.slot">
                 <slot :name="col.item.slot" :item="item" :i="i"></slot>
               </div>

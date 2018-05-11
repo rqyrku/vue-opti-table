@@ -11,8 +11,11 @@
   import BootstrapVue from 'bootstrap-vue';
   import VueOptiTable from '../src/index';
   import data from './data';
+  
   Vue.use(BootstrapVue);
   Vue.use(VueOptiTable);
+  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap-vue/dist/bootstrap-vue.css'
   export default {
     name: 'test',
     data,

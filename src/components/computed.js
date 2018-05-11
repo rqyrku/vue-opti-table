@@ -139,8 +139,8 @@ export default {
 
   $c_exportTable() {
     const table = {};
-    this.localHeaderFields.forEach((field) => {
-      if (field.item.content && field.display !== false) {
+    this.$c_sortedHeaderFields.forEach((field) => {
+      if (field.item.content) {
         table[field.header.content] = field.item.key;
       }
     });
@@ -172,7 +172,7 @@ export default {
     return selectedRows;
   },
 
-  $_sortedHeaderFields() {
+  $c_sortedHeaderFields() {
     const sortedCols = [];
     this.localHeaderFields.forEach((header) => {
       const result = this.headerFields.find(column => column.item.key === header.item.key);
