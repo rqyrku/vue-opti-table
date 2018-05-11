@@ -22,7 +22,8 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <draggable v-model="localHeaderFields">
-                    <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content" class="list-group-item d-flex justify-content-between align-items-center">
+                    <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                        class="list-group-item d-flex justify-content-between align-items-center">
                       <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
                       <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
                     </li>
@@ -377,6 +378,9 @@ export default {
       }
       label.custom-control {
         margin-bottom: 0;
+      }
+      label > span.custom-control-description {
+        cursor: move;
       }
       .list-group-item {
         padding: .5rem 1.25rem;
