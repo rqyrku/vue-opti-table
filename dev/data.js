@@ -17,6 +17,11 @@ export default function () {
             sortable: true,
             searchable: true,
             style: { textAlign: 'center' },
+            total: {
+              parse: () => 1,
+              content: totals => totals['name.first'],
+              style: { background: '#fffdf5', fontWeight: 'bold', textAlign: 'center' },
+            },
           },
         },
         {
@@ -57,6 +62,11 @@ export default function () {
             sortable: true,
             searchable: true,
             style: { textAlign: 'center' },
+            total: {
+              parse: value => parseFloat(value.replace(/\$|,/gi, '')),
+              content: totals => `$${totals.balance.toFixed(2)}`,
+              style: { background: '#fffdf5', fontWeight: 'bold', textAlign: 'center' },
+            },
           },
         },
         {
