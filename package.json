@@ -1,10 +1,6 @@
 {
   "name": "vue-opti-table",
-<<<<<<< HEAD
-  "version": "1.3.3",
-=======
   "version": "1.3.4",
->>>>>>> 34e5bcd6f33c812314a0d773f39828b3e2accd9e
   "description": "VueJS 2 Optimized Datatable",
   "author": "Reidi Qyrku <reidiqyrku@hotmail.com>",
   "main": "dist/vue-opti-table.js",
