@@ -1,3 +1,5 @@
+const getLeafValue = (key, item) => key.split('.').reduce((obj, name) => obj[name], item);
+
 export default {
   // total
   $c_showTotal() {
@@ -7,7 +9,7 @@ export default {
     return !!this.localHeaderFields.find(field => !!field.item.filter);
   },
   $c_totals() {
-    return Object.assign({}, ...this.localHeaderFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(item[field.item.key]) : item[field.item.key]), 0) })));
+    return Object.assign({}, ...this.localHeaderFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(getLeafValue(field.item.key, item)) : getLeafValue(field.item.key, item)), 0) })));
   },
   // search
   $c_searchableFields() {
