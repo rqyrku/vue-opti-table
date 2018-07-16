@@ -64,7 +64,7 @@ export default function () {
             style: { textAlign: 'center' },
             total: {
               parse: value => parseFloat(value.replace(/\$|,/gi, '')),
-              content: totals => `$${totals.balance.toFixed(2)}`,
+              content: totals => `$${parseInt(totals.balance, 10).toFixed(2)}`,
               style: { background: '#fffdf5', fontWeight: 'bold', textAlign: 'center' },
             },
           },

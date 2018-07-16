@@ -3,17 +3,17 @@ const getLeafValue = (key, item) => key.split('.').reduce((obj, name) => obj[nam
 export default {
   // total
   $c_showTotal() {
-    return !!this.localHeaderFields.find(field => !!field.item.total);
+    return !!this.$c_sortedHeaderFields.find(field => !!field.item.total);
   },
   $c_showFilters() {
-    return !!this.localHeaderFields.find(field => !!field.item.filter);
+    return !!this.$c_sortedHeaderFields.find(field => !!field.item.filter);
   },
   $c_totals() {
-    return Object.assign({}, ...this.localHeaderFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(getLeafValue(field.item.key, item)) : getLeafValue(field.item.key, item)), 0) })));
+    return Object.assign({}, ...this.$c_sortedHeaderFields.filter(field => field.item.total).map(field => ({ [field.item.key]: this.$c_items.reduce((s, item) => s + (field.item.total.parse ? field.item.total.parse(getLeafValue(field.item.key, item)) : getLeafValue(field.item.key, item)), 0) })));
   },
   // search
   $c_searchableFields() {
-    return this.localHeaderFields.filter(field => field.item.searchable).map(field => field.item.key);
+    return this.$c_sortedHeaderFields.filter(field => field.item.searchable).map(field => field.item.key);
   },
   // selected
   $c_selectedItems() {
@@ -139,15 +139,6 @@ export default {
     return pages;
   },
 
-  $c_exportTable() {
-    const table = {};
-    this.$c_sortedHeaderFields.forEach((field) => {
-      if (field.item.content) {
-        table[field.header.content] = field.item.key;
-      }
-    });
-    return table;
-  },
   $c_shouldDisplayColumn() {
     const displayCols = [];
     this.localHeaderFields.forEach((header) => {
@@ -183,5 +174,15 @@ export default {
       }
     });
     return sortedCols;
+  },
+
+  $c_exportTable() {
+    const table = {};
+    this.$c_sortedHeaderFields.forEach((field) => {
+      if (field.item.content) {
+        table[field.header.content] = field.item.key;
+      }
+    });
+    return table;
   },
 };

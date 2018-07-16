@@ -15,4 +15,7 @@ export default { // eslint-disable-next-line
     this.localTableModel.columnsOrder = newVal;
     this.$emit('click', this.localTableModel);
   },
+  headerFields(newVal) {
+    this.localHeaderFields = newVal;
+  },
 };

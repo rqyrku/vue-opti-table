@@ -59,7 +59,7 @@
             <th v-if="selectable" style="text-align: center;">
               <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
             </th>
-            <th v-for="(col, i) in localHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
+            <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
               <div class="header">
                 <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
                   <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
@@ -92,7 +92,7 @@
         <tfoot v-if="$c_showTotal && $c_items.length">
           <tr>
             <td v-if="selectable" class="col-disable-bg"></td>
-            <td v-for="(col, i) in localHeaderFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
+            <td v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
                 :style="(col.item.total && col.item.total.style) || col.item.style || ''"
                 :class="{'col-disable-bg': !col.item.total}">
                 <template v-if="col.item.total">
