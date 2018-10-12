@@ -10,7 +10,7 @@ export default function () {
     table: {
       fields: [
         {
-          header: { content: 'First Name', style: '', info: 'This is the first name' },
+          header: { content: () => 'Test', style: '', info: 'This is the first name' },
           item: {
             key: 'name.first',
             content: item => item.name.first,
@@ -25,7 +25,7 @@ export default function () {
           },
         },
         {
-          header: { content: 'Last Name', style: '' },
+          header: { content: () => 'DATA @', style: '' },
           item: {
             key: 'name.last',
             content: item => item.name.last,
@@ -122,6 +122,9 @@ export default function () {
         },
       ],
       items,
+      options: {
+        pagination: false,
+      },
     },
   };
 }

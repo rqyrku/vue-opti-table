@@ -23,10 +23,14 @@ export default {
     } else {
       this.localTableModel.displayColumns.push(col);
     }
-
     this.$emit('click', this.localTableModel);
     return this.localTableModel.displayColumns;
   },
+
+  $_isDisplayed(col) {
+    return this.localTableModel.displayColumns.find(column => column.item.key === col.item.key);
+  },
+
   // Pagination
   $_changePageAction(page) {
     this.currentPage = page;

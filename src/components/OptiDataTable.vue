@@ -23,8 +23,12 @@
                 <ul class="list-group list-group-flush">
                   <draggable v-model="localHeaderFields">
                     <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
-                        class="list-group-item d-flex justify-content-between align-items-center">
-                      <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">{{ col.header.content }}</b-form-checkbox>
+                        class="list-group-item">
+                      <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                        <span class="active-selection" :class="{ 'active': $_isDisplayed(col) }"></span>
+                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)" v-if="typeof col.header.content != 'function'">{{ col.header.content }}</b-form-checkbox>
+                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)" v-if="typeof col.header.content == 'function'">{{ col.header.content() }}</b-form-checkbox>
+                      </div>
                       <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
                     </li>
                   </draggable>
@@ -67,7 +71,8 @@
                   <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}" class="arrow-down"></div>
                 </div>
                 <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
-                  <span v-html="col.header.content"></span>
+                  <span v-html="col.header.content()" v-if="typeof col.header.content == 'function'"></span>
+                  <span v-html="col.header.content" v-if="typeof col.header.content != 'function'"></span>
                   <i v-if="col.header.info" v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }" class="fa fa-info-circle info-icon"></i>
                 </div>
                 <!--DROPDOWN FILTERS-->
@@ -384,8 +389,27 @@ export default {
       }
       .list-group-item {
         padding: .5rem 1.25rem;
+        display: flex;
+        flex-direction:row;
+        justify-content: space-between;
       }
     }
+  }
+  .active-selection{
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-sizing:content-box;
+    box-shadow: 0 0 0 2px #007bff;
+    margin: auto 0
+  }
+  .active-selection.active{
+    background: #007bff;
+  }
+  .badge-pill{
+    margin: auto 0;
   }
 }
 </style>
