@@ -37,6 +37,7 @@ export default {
     if (this.$c_items.length) {
       this.models.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
+    this.$emit('changedPage', page);
   },
 
   // Select Rows Section
@@ -45,6 +46,10 @@ export default {
     if (!this.models.selectAllCheckbox) this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_itemsCurrentPage);
     this.models.selectAllCheckbox = !this.models.selectAllCheckbox;
     this.$emit('click', this.localTableModel);
+  },
+
+  $_pageSizeChanged() {
+    this.$emit('pageSizeChanged', this.paginationSize);
   },
 
   $_selectItem(row) {
