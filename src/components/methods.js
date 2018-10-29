@@ -59,6 +59,8 @@ export default {
   $_searchKeyPress(event) {
     if (event.which === 13) {
       this.$_submitSearch();
+    } else if (event.which === 8 && this.models.search.length > 0) {
+      this.$_submitSearch();
     }
   },
 

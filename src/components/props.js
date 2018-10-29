@@ -19,6 +19,5 @@ export default {
   tableModel: null,
   serverSidePagination: { type: Boolean, default: false },
   pageCount: { type: Number, default: 1 },
-  cPage: { type: Number, default: 0 },
   loading: { type: Boolean, default: false },
 };
