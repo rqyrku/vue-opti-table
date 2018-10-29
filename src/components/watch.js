@@ -1,9 +1,9 @@
 export default { // eslint-disable-next-line
-  'models.search': function (value) { 
-    this.currentPage = 1;
+  'models.search': function (value) {
+    if (!this.serverSidePagination) { this.currentPage = 1; }
   },
   items() {
-    this.$_changePageAction(1);
+    if (!this.serverSidePagination) { this.$_changePageAction(1); }
   },
   tableRows() {
     this.currentPage = 1;

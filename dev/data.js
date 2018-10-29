@@ -2,6 +2,11 @@ import items from './items';
 
 export default function () {
   return {
+    currentPage: 5,
+    pageCount: 1,
+    items: [],
+    pageSize: 10,
+    loading: false,
     tableModel: {
       selectedRows: [],
       displayColumns: [],

@@ -14,6 +14,8 @@ export default {
         this.sortOrder = 'asc';
       }
     }
+    this.currentPage = 1;
+    this.$_paginationEvent();
   },
   // used for the show/hide columns dropdown
   $_toggleDisplayColumn(col) {
@@ -37,7 +39,8 @@ export default {
     if (this.$c_items.length) {
       this.models.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
-    this.$emit('changedPage', page);
+
+    this.$_paginationEvent();
   },
 
   // Select Rows Section
@@ -49,7 +52,30 @@ export default {
   },
 
   $_pageSizeChanged() {
-    this.$emit('pageSizeChanged', this.paginationSize);
+    this.currentPage = 1;
+    this.$_paginationEvent();
+  },
+
+  $_searchKeyPress(event) {
+    if (event.which === 13) {
+      this.$_submitSearch();
+    }
+  },
+
+  $_submitSearch() {
+    this.currentPage = 1;
+    this.$_paginationEvent();
+  },
+
+  $_paginationEvent() {
+    this.$emit('paginationChange', {
+      page: this.currentPage - 1,
+      count: this.paginationSize,
+      sortField: this.sortField,
+      sortType: this.sortOrder,
+      search: this.models.search,
+      searchableFields: this.$c_searchableFields,
+    });
   },
 
   $_selectItem(row) {
