@@ -1,8 +1,8 @@
 {
   "name": "vue-opti-table2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "VueJS 2 Optimized Datatable2",
-  "author": "Reidi Qyrku <reidiqyrku@hotmail.com>, Jul Kreshpaj <julikreshpaj@gmail.com>",
+  "author": "Reidi Qyrku <reidiqyrku@hotmail.com>, Jul Kreshpaj <julikreshpaj@gmail.com>, Elis Vathi <elisvathi@outlook.com>",
   "main": "dist/vue-opti-table.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
