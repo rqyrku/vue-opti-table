@@ -13,9 +13,9 @@ export default {
       } else {
         this.sortOrder = 'asc';
       }
+      this.currentPage = 1;
+      this.$_paginationEvent();
     }
-    this.currentPage = 1;
-    this.$_paginationEvent();
   },
   // used for the show/hide columns dropdown
   $_toggleDisplayColumn(col) {
@@ -59,7 +59,7 @@ export default {
   $_searchKeyPress(event) {
     if (event.which === 13) {
       this.$_submitSearch();
-    } else if (event.which === 8 && this.models.search.length > 0) {
+    } else if (event.which === 8 && this.models.search.length === 1) {
       this.$_submitSearch();
     }
   },

@@ -1,10 +1,12 @@
 <template>
   <div class="container mt-2">
+
     <vue-opti-table selectable v-model="tableModel" @paginationChange="$_paginationChanged($event)"
                     @changedPage="$_pageChanged($event)" :serverSidePagination="true" :loading="loading"
                     :pageCount="pageCount"
                     :header-fields="table.fields" name="demo-table"
                     :items="table.items">
+
 
     </vue-opti-table>
   </div>
@@ -21,6 +23,7 @@ import loader from './loader';
 
 Vue.use(BootstrapVue);
 Vue.use(VueOptiTable);
+
 
 export default {
   name: 'test',
@@ -49,6 +52,7 @@ export default {
   created() {
     this.$_loadData({ page: 0, count: 10 });
   },
+
 };
 </script>
 
