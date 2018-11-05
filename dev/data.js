@@ -2,7 +2,7 @@ import items from './items';
 
 export default function () {
   return {
-    currentPage: 20,
+    currentPage: 1,
     pageCount: 1,
     items: [],
     pageSize: 10,

@@ -17,6 +17,7 @@ export default {
   enableColumnsLabel: { type: String, default: 'Columns' },
   defaultRows: { type: Number, default: 10 },
   tableModel: null,
+  searchValue: {type: String, default: ''},
   serverSidePagination: { type: Boolean, default: false },
   pageCount: { type: Number, default: 1 },
   loading: { type: Boolean, default: false },

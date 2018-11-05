@@ -7,9 +7,8 @@
                     :page="currentPage"
                     :header-fields="table.fields" name="demo-table"
                     :items="table.items">
-
-
     </vue-opti-table>
+
   </div>
 </template>
 
