@@ -18,4 +18,7 @@ export default { // eslint-disable-next-line
   headerFields(newVal) {
     this.localHeaderFields = newVal;
   },
+  page(val) {
+    this.currentPage = val;
+  },
 };

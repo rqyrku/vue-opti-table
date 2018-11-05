@@ -4,6 +4,7 @@
     <vue-opti-table selectable v-model="tableModel" @paginationChange="$_paginationChanged($event)"
                     @changedPage="$_pageChanged($event)" :serverSidePagination="true" :loading="loading"
                     :pageCount="pageCount"
+                    :page="currentPage"
                     :header-fields="table.fields" name="demo-table"
                     :items="table.items">
 
