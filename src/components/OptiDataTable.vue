@@ -30,7 +30,6 @@
                     <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
                         class="list-group-item">
                       <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                        <span class="active-selection" :class="{ 'active': $_isDisplayed(col) }"></span>
                         <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)"
                                          v-if="typeof col.header.content != 'function'">{{ col.header.content }}
                         </b-form-checkbox>
