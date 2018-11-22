@@ -12,15 +12,14 @@
 
       <!-- TOGGLE DISPLAY FIELDS DROPDOWN -->
       <div class="col-xl-4 col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
-
         <b-input-group>
-          <b-form-input v-model="models.search" placeholder="Search..." @focus.native="$event.target.select()"
-                        @keydown.native="$_searchKeyPress"></b-form-input>
-          <b-input-group-button v-if="serverSidePagination">
-            <b-button @click="$_submitSearch">Search</b-button>
-          </b-input-group-button>
-          <b-input-group-button slot="right" v-if="enableColumns">
-            <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
+          <b-form-input v-model="globalSearchValue"
+                        placeholder="Search..."
+                        @focus.native="$event.target.select()"
+                        @keydown.native="$_searchKeyPress">
+          </b-form-input>
+          <b-input-group-button slot="right" v-if="columnsUtility">
+            <b-dropdown :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right>
               <div class="card">
                 <div class="card-header text-center">
                   <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
@@ -30,11 +29,8 @@
                     <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
                         class="list-group-item">
                       <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)"
-                                         v-if="typeof col.header.content != 'function'">{{ col.header.content }}
-                        </b-form-checkbox>
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)"
-                                         v-if="typeof col.header.content == 'function'">{{ col.header.content() }}
+                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                          {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
                         </b-form-checkbox>
                       </div>
                       <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
@@ -64,32 +60,24 @@
     <!-- END SELECT ALL OPTION -->
     <!--TABLE -->
     <div class="table-holder">
+      <!--0 ITEMS-->
+      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
+           v-if="!$c_items.length && !(serverSidePagination && loading)">
+        No Results.
+      </div>
+      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
+           v-if="serverSidePagination && loading">
+        Loading...
+      </div>
       <table :class="[{'table-hover': hover}, 'table table-striped']">
         <!--ALL CHECKBOX & TABLE HEADERS-->
         <thead>
-<<<<<<< HEAD
-          <tr>
-            <th v-if="selectable" style="text-align: center;">
-              <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
-            </th>
-            <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
-              <div class="header">
-                <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
-                  <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
-                  <div style="height: 5px;"></div>
-                  <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}" class="arrow-down"></div>
-                </div>
-                <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
-                  <span v-html="col.header.content()"></span>
-                  <i v-if="col.header.info" v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }" class="fa fa-info-circle info-icon"></i>
-                </div>
-                <!--DROPDOWN FILTERS-->
-=======
         <tr>
           <th v-if="selectable" style="text-align: center;">
-            <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;"
-                             v-model="models.selectAllCheckbox"
-                             @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
+            <b-form-checkbox class="m-2 p-10 pr-6 m-0" 
+                             v-model="selectAllCheckbox"
+                             @click.prevent.native="$_selectAllItemsCurrentPageAction()">
+            </b-form-checkbox>
           </th>
           <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i"
               :style="col.header.style || ''">
@@ -100,12 +88,11 @@
                 <div style="height: 5px;"></div>
                 <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}"
                      class="arrow-down"></div>
->>>>>>> d10c2380ea7604ebacc3ff6aea9b841548a93b7d
               </div>
               <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2"
                    :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
-                <span v-html="col.header.content()" v-if="typeof col.header.content == 'function'"></span>
-                <span v-html="col.header.content" v-if="typeof col.header.content != 'function'"></span>
+                <span v-if="typeof col.header.content == 'function'" v-html="col.header.content()" ></span>
+                <span v-else v-html="col.header.content"></span>
                 <i v-if="col.header.info"
                    v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }"
                    class="fa fa-info-circle info-icon"></i>
@@ -118,8 +105,10 @@
         <tbody>
         <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
           <td v-if="selectable" style="text-align: center;">
-            <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;"
-                             @change="$_selectItem(item)"></b-form-checkbox>
+            <b-form-checkbox :checked="$c_shouldSelectRow[i]"
+                             style="padding: 10px; padding-right: 6px; margin: 0px;"
+                             @change="$_selectItem(item)">
+            </b-form-checkbox>
           </td>
           <td v-for="(col, j) in $c_sortedHeaderFields" :class="col.item.cellClass" :key="j"
               v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''"
@@ -128,7 +117,8 @@
               <slot :name="col.item.slot" :item="item" :i="i"></slot>
             </div>
             <div v-else :class="[col.item.class, 'field']"
-                 v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
+                 v-html="col.item.content ? col.item.content(item) : item[col.item.key]">
+            </div>
           </td>
         </tr>
         </tbody>
@@ -146,15 +136,6 @@
         </tr>
         </tfoot>
       </table>
-      <!--0 ITEMS-->
-      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
-           v-if="!$c_items.length && !(serverSidePagination && loading)">
-        No Results.
-      </div>
-      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
-           v-if="serverSidePagination && loading">
-        Loading...
-      </div>
     </div>
     <!--PAGINATION-->
     <div class="space" v-if="showPagination"></div>
@@ -220,8 +201,8 @@ export default {
   watch,
   components: {
     downloadExcel: JsonExcel,
-    VueOptiSelect,
     draggable,
+    VueOptiSelect,
   },
   model: {
     prop: 'tableModel',

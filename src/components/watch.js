@@ -1,5 +1,5 @@
 export default { // eslint-disable-next-line
-  'models.search': function (value) {
+  globalSearchValue() {
     if (!this.serverSidePagination) {
       this.currentPage = 1;
     }
@@ -30,8 +30,4 @@ export default { // eslint-disable-next-line
     this.sortOrder = val.order;
     this.sortField = val.field || val.key;
   },
-  searchValue(val) {
-    this.models.search = val;
-  },
-
 };

@@ -37,7 +37,7 @@ export default {
   $_changePageAction(page) {
     this.currentPage = page;
     if (this.$c_items.length) {
-      this.models.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
+      this.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
 
     this.$_paginationEvent();
@@ -46,8 +46,8 @@ export default {
   // Select Rows Section
   $_selectAllItemsCurrentPageAction() {
     this.$c_itemsCurrentPage.forEach(item => this.localTableModel.selectedRows = this.localTableModel.selectedRows.filter(row => row === item));
-    if (!this.models.selectAllCheckbox) this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_itemsCurrentPage);
-    this.models.selectAllCheckbox = !this.models.selectAllCheckbox;
+    if (!this.selectAllCheckbox) this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_itemsCurrentPage);
+    this.selectAllCheckbox = !this.selectAllCheckbox;
     this.$emit('click', this.localTableModel);
   },
 
@@ -59,7 +59,7 @@ export default {
   $_searchKeyPress(event) {
     if (event.which === 13) {
       this.$_submitSearch();
-    } else if (event.which === 8 && this.models.search.length === 1) {
+    } else if (event.which === 8 && this.globalSearchValue.length === 1) {
       this.$_submitSearch();
     }
   },
@@ -75,7 +75,7 @@ export default {
       count: this.paginationSize,
       sortField: this.sortField,
       sortType: this.sortOrder,
-      search: this.models.search,
+      search: this.globalSearchValue,
       searchableFields: this.$c_searchableFields,
     });
   },
@@ -98,7 +98,7 @@ export default {
     if (v) {
       this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_items);
     }
-    this.models.selectAllCheckbox = v;
+    this.selectAllCheckbox = v;
     this.$emit('click', this.localTableModel);
   },
 

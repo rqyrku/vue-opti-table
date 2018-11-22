@@ -15,7 +15,7 @@ export default function () {
     table: {
       fields: [
         {
-          header: { content: () => 'Test', style: '', info: 'This is the first name' },
+          header: { content: () => 'Firstname', style: '', info: 'This is the first name' },
           item: {
             key: 'name.first',
             content: item => item.name.first,
@@ -30,7 +30,7 @@ export default function () {
           },
         },
         {
-          header: { content: () => 'DATA @', style: '' },
+          header: { content: () => 'Lastname', style: '' },
           item: {
             key: 'name.last',
             content: item => item.name.last,

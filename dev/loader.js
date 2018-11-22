@@ -10,7 +10,7 @@ export default async function loadPaginatedData(page, count, sortField, sortDire
         const splits = sortField.split('.');
         firstSortItem = a[splits[0]];
         secondSortItem = b[splits[0]];
-        for (let i = 1; i < splits.length; i++) {
+        for (let i = 1; i < splits.length; i += 1) {
           firstSortItem = firstSortItem[splits[i]];
           secondSortItem = secondSortItem[splits[i]];
         }
@@ -38,7 +38,7 @@ export default async function loadPaginatedData(page, count, sortField, sortDire
         if (field.split('.').length > 1) {
           const splits = field.split('.');
           searchItem = item[splits[0]];
-          for (let i = 1; i < splits.length; i++) {
+          for (let i = 1; i < splits.length; i) {
             searchItem = searchItem[splits[i]];
           }
         } else {
@@ -73,6 +73,6 @@ export default async function loadPaginatedData(page, count, sortField, sortDire
             hasNextPage: (page * count) + count < data.length,
           },
       });
-    }, 500);
+    }, 1000);
   });
 }

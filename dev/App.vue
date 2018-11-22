@@ -1,8 +1,11 @@
 <template>
   <div class="container mt-2">
 
-    <vue-opti-table selectable v-model="tableModel" @paginationChange="$_paginationChanged($event)"
-                    @changedPage="$_pageChanged($event)" :serverSidePagination="true" :loading="loading"
+    <vue-opti-table selectable 
+                    v-model="tableModel"
+                    @paginationChange="$_paginationChanged($event)"
+                    @changedPage="$_pageChanged($event)"
+                    :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
                     :header-fields="table.fields" name="demo-table"

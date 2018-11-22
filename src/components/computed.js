@@ -40,10 +40,7 @@ export default {
     return this.localTableModel.selectedRows.every(value => this.$c_itemsCurrentPage.indexOf(value) >= 0);
   },
   $c_itemsCurrentPage() {
-    if (this.serverSidePagination) {
-      return this.$c_items;
-    }
-    if (!this.$c_pagesInPagination) {
+    if (this.serverSidePagination || !this.$c_pagesInPagination) {
       return this.$c_items;
     }
     const start = (this.currentPage - 1) * this.paginationSize;
@@ -79,7 +76,7 @@ export default {
       }
     }
     // handle search
-    if (this.models.search) {
+    if (this.globalSearchValue) {
       items = items.filter((item) => {
         for (const key of this.$c_searchableFields) {
           let content = item[key];
@@ -91,29 +88,12 @@ export default {
               return undefined;
             }, item);
           }
-          if ((content || '').toString().toLowerCase().includes(this.models.search.toLowerCase())) {
+          if ((content || '').toString().toLowerCase().includes(this.globalSearchValue.toLowerCase())) {
             return true;
           }
         }
       });
     }
-    // handle filters
-    // this.localHeaderFields.forEach((field) => {
-    //   let content = field.item.key;
-    //   if (field.item.key.includes('.')) {
-    //     content = field.item.key.split('.').reduce((acc, part) => {
-    //       if (acc) {
-    //         return acc[part];
-    //       }
-    //       return undefined;
-    //     }, field);
-    //   }
-    //   if (field.item.filter) {
-    //     if (field.item.filter.type === 'search' && this.filterModels[content] && this.filterModels[content].length) {
-    //       items = items.filter(item => (item[content] || '').toString().toLowerCase().includes(this.filterModels[content].toLowerCase()));
-    //     }
-    //   }
-    // });
     return items;
   },
 
