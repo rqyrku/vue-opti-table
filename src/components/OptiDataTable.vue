@@ -1,53 +1,88 @@
 <template>
   <div class="datatable-wrapper">
     <!--TOP SLOT-->
-    <div class="row" v-if="$slots['top']">
-      <slot name="top"></slot>
-    </div>
-    <div class="space" v-if="$slots['top']"></div>
-    <!-- SHOW SEARCH -->
-    <div class="row" v-if="showSearch">
-      <!-- SEARCH SLOT -->
-      <slot name="search"></slot>
+    <div class="row">
+      <slot name="vot-top">
 
-      <!-- TOGGLE DISPLAY FIELDS DROPDOWN -->
-      <div class="col-xl-4 col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
-        <b-input-group>
-          <b-form-input v-model="globalSearchValue"
+        <!-- TABLE ACTIONS SLOT -->
+        <div class="col-xs-12 col-md-6 col-lg-6 mr-0">
+          <slot name="vot-actions"></slot>
+        </div>
+        <!-- TABLE ACTIONS SLOT -->
+
+        <!-- SEARCH SLOT -->
+        <div class="col-xs-8 col-md-4 col-lg-4 mr-0 pr-0">
+          <slot name="vot-search" v-if="globalSearch">
+            <b-form-input v-model="globalSearchValue"
                         placeholder="Search..."
                         @focus.native="$event.target.select()"
                         @keydown.native="$_searchKeyPress">
-          </b-form-input>
-          <b-input-group-button slot="right" v-if="columnsUtility">
-            <b-dropdown :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right>
-              <div class="card">
-                <div class="card-header text-center">
-                  <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+            </b-form-input>
+          </slot>
+        </div>
+        <!-- END SEARCH SLOT -->
+
+        <!-- TABLE UTILS SLOT -->
+        <div class="col-xs-4 col-md-2 col-lg-2 ml-0 pl-0">
+          <slot name="vot-utils">
+            <div class="btn-group" role="group">
+              <!-- COLUMNS UTIL DROPDOWN -->
+              <b-dropdown v-if="columnsUtility" :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
+                <div class="card">
+                  <div class="card-header text-center">
+                    <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <draggable v-model="localHeaderFields">
+                      <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                          class="list-group-item">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                          <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                            {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                          </b-form-checkbox>
+                        </div>
+                        <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                      </li>
+                    </draggable>
+                  </ul>
                 </div>
-                <ul class="list-group list-group-flush">
-                  <draggable v-model="localHeaderFields">
-                    <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
-                        class="list-group-item">
-                      <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
-                          {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
-                        </b-form-checkbox>
-                      </div>
-                      <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
-                    </li>
-                  </draggable>
-                </ul>
-              </div>
-            </b-dropdown>
-          </b-input-group-button>
-        </b-input-group>
-      </div>
-      <!-- END TOGGLE DISPLAY FIELDS DROPDOWN -->
+              </b-dropdown>
+              <!-- END COLUMNS UTIL DROPDOWN -->
+
+              <!-- SETTINGS UTIL DROPDOWN -->
+              <b-dropdown v-if="columnsUtility" text="Settings" class="columns-dropdown" :no-flip="true" right >
+                <div class="card">
+                  <div class="card-header text-center">
+                    <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <draggable v-model="localHeaderFields">
+                      <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                          class="list-group-item">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                          <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                            {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                          </b-form-checkbox>
+                        </div>
+                        <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                      </li>
+                    </draggable>
+                  </ul>
+                </div>
+              </b-dropdown>
+              <!-- END SETTINGS UTIL DROPDOWN -->
+            </div>
+          </slot>
+        </div>
+        <!-- END TABLE UTIL SLOT -->
+      </slot>
     </div>
-    <!-- END SHOW SEARCH-->
-    <div class="space" v-if="showSearch"></div>
+    <!-- END TOP SLOT -->
+
+    <div class="space"></div>
+
     <!--SELECT ALL OPTION -->
-    <div class="selectAll" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
+    <div class="select-all-row" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
       <span v-if="$c_areAllItemsSelected">
         <span>All {{ $c_items.length }} {{ selectLabel }} selected.</span>
         <span @click="$_selectAllItemsAction(false)" style="text-decoration: underline; cursor: pointer;">Clear selection</span>
@@ -74,7 +109,7 @@
         <thead>
         <tr>
           <th v-if="selectable" style="text-align: center;">
-            <b-form-checkbox class="m-2 p-10 pr-6 m-0" 
+            <b-form-checkbox class="m-2 p-10 pr-6 m-0"
                              v-model="selectAllCheckbox"
                              @click.prevent.native="$_selectAllItemsCurrentPageAction()">
             </b-form-checkbox>
@@ -137,48 +172,51 @@
         </tfoot>
       </table>
     </div>
-    <!--PAGINATION-->
-    <div class="space" v-if="showPagination"></div>
+    
+    <div class="space"></div>
 
-    <div class="row" v-if="showPagination">
-      <vue-opti-select class="col-md-2 col-sm-12" v-model="paginationSize" :list="rows"
-                       @click="$_pageSizeChanged()"></vue-opti-select>
-      <div class="col-md-auto" v-if="enableExport">
-        <download-excel
-          class="btn btn-secondary pointer-button"
-          :data="items"
-          :fields="$c_exportTable"
-          type="csv"
-          :name="`${exportLabel}.csv`">
-          Download CSV
-        </download-excel>
-      </div>
-      <div class="col-md-4 col-sm-12 ml-md-auto">
-        <ul class="pagination justify-content-end unselectable">
-          <li class="page-item">
-            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-              1</a>
-          </li>
-          <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}"
-              class="page-item"><a :class="{'btn-bg-color': currentPage === page}" class="page-link"
-                                   @click="$_changePageAction(page)">{{ page }}</a></li>
-          <li class="page-item">
-            <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{
-              $c_pages }}
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <!-- BOTTOM SLOT -->
+    <div class="row">
+
+      <slot name="bottom">
+        <vue-opti-select class="col-md-2 col-sm-12"
+                         v-model="paginationSize" 
+                         :list="rows"
+                         @click="$_pageSizeChanged()">
+        </vue-opti-select>
+        <div class="col-md-auto" v-if="enableExport">
+          <download-excel
+            class="btn btn-secondary pointer-button"
+            :data="items"
+            :fields="$c_exportTable"
+            type="csv"
+            :name="`${exportLabel}.csv`">
+            Download CSV
+          </download-excel>
+        </div>
+        <div class="col-md-4 col-sm-12 ml-md-auto" v-if="showPagination">
+          <ul class="pagination justify-content-end unselectable">
+            <li class="page-item">
+              <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+                1</a>
+            </li>
+            <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}"
+                class="page-item"><a :class="{'btn-bg-color': currentPage === page}" class="page-link"
+                                    @click="$_changePageAction(page)">{{ page }}</a></li>
+            <li class="page-item">
+              <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">{{
+                $c_pages }}
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </slot>
     </div>
-    <!--BOTTOM SLOT-->
-    <div class="space" v-if="$slots['bottom']"></div>
-    <div class="row" v-if="$slots['bottom']">
-      <slot name="bottom"></slot>
-    </div>
+    <!--BOTTOM SLOT-->  
   </div>
 </template>
 
@@ -236,10 +274,10 @@ export default {
     margin-bottom: 0px;
   }
 
-  .selectAll {
+  .select-all-row {
     text-align: center;
     background: #eee;
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .space {

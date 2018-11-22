@@ -9,7 +9,7 @@ export default {
   selectLabel: { type: String, default: 'items' },
   searchClass: { type: String, default: '' },
   sort: { type: Object, default: () => ({ key: '', order: '', field: '' }) },
-  showSearch: { type: Boolean, default: true },
+  globalSearch: { type: Boolean, default: true },
   showPagination: { type: Boolean, default: true },
   enableExport: { type: Boolean, default: true },
   exportLabel: { type: String, default: 'export' },

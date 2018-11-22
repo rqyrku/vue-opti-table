@@ -1,14 +1,15 @@
 <template>
   <div class="container mt-2">
 
-    <vue-opti-table selectable 
+    <vue-opti-table selectable
+                    name="demo-table"
                     v-model="tableModel"
                     @paginationChange="$_paginationChanged($event)"
                     @changedPage="$_pageChanged($event)"
                     :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
-                    :header-fields="table.fields" name="demo-table"
+                    :header-fields="table.fields"
                     :items="table.items">
     </vue-opti-table>
 

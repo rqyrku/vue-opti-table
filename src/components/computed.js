@@ -22,6 +22,7 @@ export default {
   $c_areAllItemsSelected() { // $c_areAllItemsSelected
     return this.$c_items.length === this.localTableModel.selectedRows.length;
   },
+
   $c_areAllItemsSelectedOnCurrentPage() {
     /** Continue only if number of items selected is equeal or
      * greater than the number of current page items
