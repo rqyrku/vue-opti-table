@@ -67,24 +67,6 @@
       <table :class="[{'table-hover': hover}, 'table table-striped']">
         <!--ALL CHECKBOX & TABLE HEADERS-->
         <thead>
-<<<<<<< HEAD
-          <tr>
-            <th v-if="selectable" style="text-align: center;">
-              <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;" v-model="models.selectAllCheckbox" @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
-            </th>
-            <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i" :style="col.header.style || ''">
-              <div class="header">
-                <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
-                  <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}" class="arrow-up"></div>
-                  <div style="height: 5px;"></div>
-                  <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}" class="arrow-down"></div>
-                </div>
-                <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2" :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
-                  <span v-html="col.header.content()"></span>
-                  <i v-if="col.header.info" v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }" class="fa fa-info-circle info-icon"></i>
-                </div>
-                <!--DROPDOWN FILTERS-->
-=======
         <tr>
           <th v-if="selectable" style="text-align: center;">
             <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;"
@@ -100,7 +82,6 @@
                 <div style="height: 5px;"></div>
                 <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}"
                      class="arrow-down"></div>
->>>>>>> d10c2380ea7604ebacc3ff6aea9b841548a93b7d
               </div>
               <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2"
                    :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
