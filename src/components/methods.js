@@ -14,7 +14,7 @@ export default {
         this.sortOrder = 'asc';
       }
       this.currentPage = 1;
-      this.$_paginationEvent();
+      this.$_paginationEvent('sort');
     }
   },
   // used for the show/hide columns dropdown
@@ -40,7 +40,7 @@ export default {
       this.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
 
-    this.$_paginationEvent();
+    this.$_paginationEvent('pagination');
   },
 
   // Select Rows Section
@@ -53,7 +53,7 @@ export default {
 
   $_pageSizeChanged() {
     this.currentPage = 1;
-    this.$_paginationEvent();
+    this.$_paginationEvent('rowCount');
   },
 
   $_searchKeyPress(event) {
@@ -66,18 +66,19 @@ export default {
 
   $_submitSearch() {
     this.currentPage = 1;
-    this.$_paginationEvent();
+    this.$_paginationEvent('search');
   },
-
-  $_paginationEvent() {
-    this.$emit('paginationChange', {
-      page: this.currentPage - 1,
-      count: this.paginationSize,
-      sortField: this.sortField,
-      sortType: this.sortOrder,
-      search: this.globalSearchValue,
-      searchableFields: this.$c_searchableFields,
-    });
+  $_paginationEvent(type) {
+    if (this.serverSidePagination) {
+      this.$emit(`on-${type}`, {
+        page: this.currentPage - 1,
+        count: this.paginationSize,
+        sortField: this.sortField,
+        sortType: this.sortOrder,
+        search: this.model.search,
+        searchableFields: this.$c_searchableFields,
+      });
+    }
   },
 
   $_selectItem(row) {
