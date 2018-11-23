@@ -2,6 +2,7 @@ import items from './items';
 
 export default function () {
   return {
+    serverSidePagination: true,
     currentPage: 1,
     pageCount: 1,
     items: [],
