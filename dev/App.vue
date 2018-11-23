@@ -1,13 +1,6 @@
 <template>
   <div class="container mt-2">
 
-<<<<<<< HEAD
-    <vue-opti-table selectable
-                    name="demo-table"
-                    v-model="tableModel"
-                    @paginationChange="$_paginationChanged($event)"
-                    @changedPage="$_pageChanged($event)"
-=======
 
     <vue-opti-table selectable v-model="tableModel"
                     @on-sort="$_paginationChanged($event)"
@@ -15,7 +8,6 @@
                     @on-rowCount="$_paginationChanged($event)"
                     @on-pagination="$_paginationChanged($event)"
                     :serverSidePagination="serverSidePagination"
->>>>>>> 4b85c70939f5757d7b5b1618894623c2f8d7c36e
                     :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
