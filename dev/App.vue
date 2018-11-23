@@ -2,7 +2,7 @@
   <div class="container mt-2">
 
     <vue-opti-table selectable v-model="tableModel" @paginationChange="$_paginationChanged($event)"
-                    @sort="$_paginationChanged($event)" @search="$_paginationChanged($event)" @rowCount="$_paginationChanged($event)" @pagination="$_paginationChanged($event)" :serverSidePagination="serverSidePagination" :loading="loading"
+                    @on-sort="$_paginationChanged($event)" @on-search="$_paginationChanged($event)" @on-rowCount="$_paginationChanged($event)" @on-pagination="$_paginationChanged($event)" :serverSidePagination="serverSidePagination" :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
                     :header-fields="table.fields" name="demo-table"

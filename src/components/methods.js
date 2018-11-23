@@ -71,7 +71,7 @@ export default {
 
   $_paginationEvent(type) {
     if (this.serverSidePagination) {
-      this.$emit(type, {
+      this.$emit(`on-${type}`, {
         page: this.currentPage - 1,
         count: this.paginationSize,
         sortField: this.sortField,
