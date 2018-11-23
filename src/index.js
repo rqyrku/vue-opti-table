@@ -1,20 +1,20 @@
-import OptiDataTable from './components/OptiDataTable';
+import VueOptiTable from './components/VueOptiTable';
 
 function install(Vue) {
-  Vue.component(OptiDataTable.name, OptiDataTable);
+  Vue.component(VueOptiTable.name, VueOptiTable);
 }
 
-const OptiDataTablePlugin = {
+const VueOptiTablePlugin = {
   install,
 };
 
 // Automatic installation if Vue has been added to the global scope.
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(OptiDataTablePlugin);
+  window.Vue.use(VueOptiTablePlugin);
 }
 
-export default OptiDataTablePlugin;
+export default VueOptiTablePlugin;
 export {
-  OptiDataTable as VueOptiTable,
+  VueOptiTable,
 };
 

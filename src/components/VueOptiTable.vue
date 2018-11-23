@@ -1,0 +1,525 @@
+<template>
+  <div class="datatable-wrapper">
+    <!--TOP SLOT-->
+    <div class="row">
+      <slot name="vot-top">
+
+        <!-- TABLE ACTIONS SLOT -->
+        <div class="col-xs-12 col-md-6 col-lg-6">
+          <slot name="vot-actions"></slot>
+        </div>
+        <!-- TABLE ACTIONS SLOT -->
+
+        <!-- SEARCH SLOT -->
+        <div class="col-xs-12 col-md-6 col-lg-6 justify-content-end">
+          <b-input-group>
+            <!-- SEARCH SLOT -->
+            <slot name="vot-search" v-if="globalSearch" >
+              <input v-model="globalSearchValue"
+                    class="form-control"
+                    placeholder="Search..."
+                    @focus.native="$event.target.select()"
+                    @keydown.native="$_searchKeyPress" />
+            </slot>
+            <!-- END SEARCH SLOT -->
+
+            <!-- TABLE UTILS SLOT -->
+            <div class="btn-group" role="group">
+              <slot name="vot-utils">
+
+                <!-- COLUMNS UTIL DROPDOWN -->
+                <b-dropdown v-if="columnsUtility" :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
+                  <template slot="button-content">
+                    <img width="20px" height="20px" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2IDU2IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NiA1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiPgo8Zz4KCTxwYXRoIGQ9Ik04LDE0YzMuNTE5LDAsNi40MzItMi42MTQsNi45Mi02SDU0YzAuNTUzLDAsMS0wLjQ0NywxLTFzLTAuNDQ3LTEtMS0xSDE0LjkyQzE0LjQzMiwyLjYxNCwxMS41MTksMCw4LDAgICBDNC4xNCwwLDEsMy4xNDEsMSw3UzQuMTQsMTQsOCwxNHogTTgsMmMyLjc1NywwLDUsMi4yNDMsNSw1cy0yLjI0Myw1LTUsNVMzLDkuNzU3LDMsN1M1LjI0MywyLDgsMnoiIGZpbGw9IiMwMDAwMDAiLz4KCTxwYXRoIGQ9Ik00OCw0MmMtMy41MTksMC02LjQzMiwyLjYxNC02LjkyLDZIMmMtMC41NTIsMC0xLDAuNDQ3LTEsMXMwLjQ0OCwxLDEsMWgzOS4wOGMwLjQ4OCwzLjM4NiwzLjQwMSw2LDYuOTIsNiAgIGMzLjg1OSwwLDctMy4xNDEsNy03UzUxLjg1OSw0Miw0OCw0MnogTTQ4LDU0Yy0yLjc1NywwLTUtMi4yNDMtNS01czIuMjQzLTUsNS01czUsMi4yNDMsNSw1UzUwLjc1Nyw1NCw0OCw1NHoiIGZpbGw9IiMwMDAwMDAiLz4KCTxwYXRoIGQ9Ik01NCwyN0gzNS4zNjhjLTAuMzk2LTMuNjAyLTMuNDU1LTYuNDE0LTcuMTYxLTYuNDE0Yy0zLjcwNiwwLTYuNzY1LDIuODEzLTcuMTYxLDYuNDE0SDJjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDEgICBoMTkuMTA5YzAuNTc3LDMuNCwzLjUzNiw2LDcuMDk4LDZjMy41NjIsMCw2LjUyLTIuNiw3LjA5Ny02SDU0YzAuNTUzLDAsMS0wLjQ0NywxLTFTNTQuNTUzLDI3LDU0LDI3eiBNMjguMjA3LDMzICAgQzI1LjMzNiwzMywyMywzMC42NjQsMjMsMjcuNzkzczIuMzM2LTUuMjA3LDUuMjA3LTUuMjA3czUuMjA3LDIuMzM2LDUuMjA3LDUuMjA3UzMxLjA3OCwzMywyOC4yMDcsMzN6IiBmaWxsPSIjMDAwMDAwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" />
+                  </template>
+                  <div class="card">
+                    <div class="card-header text-center">
+                      <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <draggable v-model="localHeaderFields">
+                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                            class="list-group-item">
+                          <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                            <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                              {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                            </b-form-checkbox>
+                          </div>
+                          <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                        </li>
+                      </draggable>
+                    </ul>
+                  </div>
+                </b-dropdown>
+                <!-- END COLUMNS UTIL DROPDOWN -->
+
+                <!-- SETTINGS UTIL DROPDOWN -->
+                <b-dropdown v-if="columnsUtility" text="Settings" class="columns-dropdown" :no-flip="true" right >
+                  <template slot="button-content">
+                    <img width="20px" height="20spx" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU0IDU0IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NCA1NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNywxM2MtNy43MiwwLTE0LDYuMjgtMTQsMTRzNi4yOCwxNCwxNCwxNHMxNC02LjI4LDE0LTE0UzM0LjcyLDEzLDI3LDEzeiBNMjcsMzljLTYuNjE3LDAtMTItNS4zODMtMTItMTJzNS4zODMtMTIsMTItMTIgICBzMTIsNS4zODMsMTIsMTJTMzMuNjE3LDM5LDI3LDM5eiIgZmlsbD0iIzAwMDAwMCIvPgoJPHBhdGggZD0iTTUxLjIyLDIxaC0yLjAxOGMtMC41MTUtMS45MTItMS4yNzItMy43NDItMi4yNi01LjQ1N2wxLjQyNi0xLjQyNmMwLjUyNS0wLjUyNSwwLjgxNC0xLjIyNCwwLjgxNC0xLjk2NiAgIGMwLTAuNzQzLTAuMjg5LTEuNDQxLTAuODE0LTEuOTY3bC00LjU1My00LjU1M2MtMS4wNS0xLjA0OS0yLjg4MS0xLjA1MS0zLjkzMywwbC0xLjQyNiwxLjQyNkMzNi43NCw2LjA3LDM0LjkxMSw1LjMxMywzMyw0Ljc5OCAgIFYyLjc4QzMzLDEuMjQ3LDMxLjc1MywwLDMwLjIyLDBIMjMuNzhDMjIuMjQ3LDAsMjEsMS4yNDcsMjEsMi43OHYyLjAxOGMtMS45MTEsMC41MTUtMy43NCwxLjI3Mi01LjQ1NywyLjI2bC0xLjQyNi0xLjQyNiAgIGMtMS4wNTEtMS4wNTItMi44ODMtMS4wNS0zLjkzMywwbC00LjU1Myw0LjU1M2MtMC41MjUsMC41MjUtMC44MTQsMS4yMjQtMC44MTQsMS45NjdjMCwwLjc0MiwwLjI4OSwxLjQ0LDAuODE0LDEuOTY2bDEuNDI2LDEuNDI2ICAgQzYuMDcsMTcuMjU4LDUuMzEyLDE5LjA4OCw0Ljc5OCwyMUgyLjc4QzEuMjQ3LDIxLDAsMjIuMjQ3LDAsMjMuNzh2Ni40MzlDMCwzMS43NTMsMS4yNDcsMzMsMi43OCwzM2gyLjAxOCAgIGMwLjUxNSwxLjkxMSwxLjI3MiwzLjc0LDIuMjYsNS40NTdsLTEuNDI2LDEuNDI2Yy0wLjUyNSwwLjUyNS0wLjgxNCwxLjIyNC0wLjgxNCwxLjk2NmMwLDAuNzQzLDAuMjg5LDEuNDQxLDAuODE0LDEuOTY3ICAgbDQuNTUzLDQuNTUzYzEuMDUsMS4wNTEsMi44ODIsMS4wNTIsMy45MzMsMGwxLjQyNi0xLjQyNmMxLjcxNywwLjk4NywzLjU0NiwxLjc0NSw1LjQ1NywyLjI2djIuMDE4YzAsMS41MzMsMS4yNDcsMi43OCwyLjc4LDIuNzggICBoNi40MzljMS41MzMsMCwyLjc4LTEuMjQ3LDIuNzgtMi43OHYtMi4wMThjMS45MTEtMC41MTUsMy43NC0xLjI3Miw1LjQ1Ny0yLjI2bDEuNDI2LDEuNDI2YzEuMDUyLDEuMDUyLDIuODgyLDEuMDUsMy45MzMsMCAgIGw0LjU1My00LjU1M2MwLjUyNS0wLjUyNSwwLjgxNC0xLjIyNCwwLjgxNC0xLjk2N2MwLTAuNzQyLTAuMjg5LTEuNDQtMC44MTQtMS45NjZsLTEuNDI2LTEuNDI2ICAgYzAuOTg3LTEuNzE3LDEuNzQ1LTMuNTQ2LDIuMjYtNS40NTdoMi4wMThjMS41MzMsMCwyLjc4LTEuMjQ3LDIuNzgtMi43OFYyMy43OEM1NCwyMi4yNDcsNTIuNzUzLDIxLDUxLjIyLDIxeiBNNTIsMzAuMjIgICBDNTIsMzAuNjUsNTEuNjUsMzEsNTEuMjIsMzFoLTMuNTkybC0wLjE4LDAuNzczYy0wLjUyMSwyLjIzNy0xLjM5OSw0LjM2LTIuNjEzLDYuMzExbC0wLjQyLDAuNjc0bDIuNTM5LDIuNTM5ICAgYzAuMzA1LDAuMzA1LDAuMzA1LDAuOCwwLDEuMTA0bC00LjU1Myw0LjU1M2MtMC4zMDQsMC4zMDQtMC43OTksMC4zMDYtMS4xMDQsMGwtMi41MzktMi41MzlsLTAuNjc0LDAuNDIgICBjLTEuOTUsMS4yMTQtNC4wNzMsMi4wOTMtNi4zMTEsMi42MTNMMzEsNDcuNjI4djMuNTkyQzMxLDUxLjY1LDMwLjY1LDUyLDMwLjIyLDUySDIzLjc4QzIzLjM1LDUyLDIzLDUxLjY1LDIzLDUxLjIydi0zLjU5MiAgIGwtMC43NzMtMC4xOGMtMi4yMzctMC41MjEtNC4zNi0xLjM5OS02LjMxMS0yLjYxM2wtMC42NzQtMC40MmwtMi41MzksMi41MzljLTAuMzA2LDAuMzA2LTAuODAxLDAuMzA0LTEuMTA0LDBsLTQuNTUzLTQuNTUzICAgYy0wLjMwNS0wLjMwNS0wLjMwNS0wLjgsMC0xLjEwNGwyLjUzOS0yLjUzOWwtMC40Mi0wLjY3NGMtMS4yMTQtMS45NS0yLjA5My00LjA3My0yLjYxMy02LjMxMUw2LjM3MiwzMUgyLjc4ICAgQzIuMzUsMzEsMiwzMC42NSwyLDMwLjIyVjIzLjc4QzIsMjMuMzUsMi4zNSwyMywyLjc4LDIzaDMuNTkybDAuMTgtMC43NzNjMC41MjEtMi4yMzgsMS4zOTktNC4zNjEsMi42MTMtNi4zMTFsMC40Mi0wLjY3NCAgIGwtMi41MzktMi41MzljLTAuMzA1LTAuMzA1LTAuMzA1LTAuOCwwLTEuMTA0bDQuNTUzLTQuNTUzYzAuMzA0LTAuMzA0LDAuNzk5LTAuMzA2LDEuMTA0LDBsMi41MzksMi41MzlsMC42NzQtMC40MiAgIGMxLjk1LTEuMjE0LDQuMDczLTIuMDkzLDYuMzExLTIuNjEzTDIzLDYuMzcyVjIuNzhDMjMsMi4zNSwyMy4zNSwyLDIzLjc4LDJoNi40MzlDMzAuNjUsMiwzMSwyLjM1LDMxLDIuNzh2My41OTJsMC43NzMsMC4xOCAgIGMyLjIzNywwLjUyMSw0LjM2LDEuMzk5LDYuMzExLDIuNjEzbDAuNjc0LDAuNDJsMi41MzktMi41MzljMC4zMDYtMC4zMDYsMC44MDEtMC4zMDQsMS4xMDQsMGw0LjU1Myw0LjU1MyAgIGMwLjMwNSwwLjMwNSwwLjMwNSwwLjgsMCwxLjEwNGwtMi41MzksMi41MzlsMC40MiwwLjY3NGMxLjIxNCwxLjk0OSwyLjA5Myw0LjA3MiwyLjYxMyw2LjMxMUw0Ny42MjgsMjNoMy41OTIgICBDNTEuNjUsMjMsNTIsMjMuMzUsNTIsMjMuNzhWMzAuMjJ6IiBmaWxsPSIjMDAwMDAwIi8+Cgk8cGF0aCBkPSJNMjcsMTdjLTUuNTE0LDAtMTAsNC40ODYtMTAsMTBzNC40ODYsMTAsMTAsMTBzMTAtNC40ODYsMTAtMTBTMzIuNTE0LDE3LDI3LDE3eiBNMjcsMzVjLTQuNDExLDAtOC0zLjU4OS04LThzMy41ODktOCw4LTggICBzOCwzLjU4OSw4LDhTMzEuNDExLDM1LDI3LDM1eiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+                  </template>
+                  <div class="card">
+                    <div class="card-header text-center">
+                      <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <draggable v-model="localHeaderFields">
+                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                            class="list-group-item">
+                          <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                            <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                              {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                            </b-form-checkbox>
+                          </div>
+                          <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                        </li>
+                      </draggable>
+                    </ul>
+                  </div>
+                </b-dropdown>
+                <!-- END SETTINGS UTIL DROPDOWN -->
+              </slot>
+            </div>
+          </b-input-group>
+        </div>
+        <!-- END TABLE UTIL SLOT -->
+      </slot>
+    </div>
+    <!-- END TOP SLOT -->
+
+    <div class="space"></div>
+
+    <!--SELECT ALL OPTION -->
+    <div class="select-all-row" v-if="$c_itemsCurrentPage.length && $c_areAllItemsSelectedOnCurrentPage">
+      <span v-if="$c_areAllItemsSelected">
+        <span>All {{ $c_items.length }} {{ selectLabel }} selected.</span>
+        <span @click="$_selectAllItemsAction(false)" style="text-decoration: underline; cursor: pointer;">Clear selection</span>
+      </span>
+      <span v-else>
+        <span>All {{ $c_itemsCurrentPage.length }} {{ selectLabel }} in current page selected.</span>
+        <span @click="$_selectAllItemsAction(true)" style="text-decoration: underline; cursor: pointer;">Select all {{ $c_items.length }} {{ selectLabel }}</span>
+      </span>
+    </div>
+    <!-- END SELECT ALL OPTION -->
+
+    <!--TABLE -->
+    <div class="table-holder">
+      <!--0 ITEMS-->
+      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
+           v-if="!$c_items.length && !(serverSidePagination && loading)">
+        No Results.
+      </div>
+      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
+           v-if="serverSidePagination && loading">
+        Loading...
+      </div>
+      <table :class="[{'table-hover': hover}, 'table table-striped']">
+        <!--ALL CHECKBOX & TABLE HEADERS-->
+        <thead>
+        <tr>
+          <th v-if="selectable" style="text-align: center;">
+            <b-form-checkbox class="m-2 p-10 pr-6 m-0"
+                             v-model="selectAllCheckbox"
+                             @click.prevent.native="$_selectAllItemsCurrentPageAction()">
+            </b-form-checkbox>
+          </th>
+          <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i"
+              :style="col.header.style || ''">
+            <div class="header">
+              <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
+                <div :class="{'arrow-up-active': sortKey === col.item.key && sortOrder === 'asc'}"
+                     class="arrow-up"></div>
+                <div style="height: 5px;"></div>
+                <div :class="{'arrow-down-active': sortKey === col.item.key && sortOrder === 'desc'}"
+                     class="arrow-down"></div>
+              </div>
+              <div @click="$_fieldClickAction(col)" class="title pt-2 pb-2"
+                   :class="{ 'pl-2': !col.item.sortable, 'pr-2': !col.item.filter }" style="text-align: center;">
+                <span v-if="typeof col.header.content == 'function'" v-html="col.header.content()" ></span>
+                <span v-else v-html="col.header.content"></span>
+                <i v-if="col.header.info"
+                   v-b-tooltip="{ hover: true, html: true, title: col.header.info, boundary: 'window' }"
+                   class="fa fa-info-circle info-icon"></i>
+              </div>
+              <!--DROPDOWN FILTERS-->
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
+          <td v-if="selectable" style="text-align: center;">
+            <b-form-checkbox :checked="$c_shouldSelectRow[i]"
+                             style="padding: 10px; padding-right: 6px; margin: 0px;"
+                             @change="$_selectItem(item)">
+            </b-form-checkbox>
+          </td>
+          <td v-for="(col, j) in $c_sortedHeaderFields" :class="col.item.cellClass" :key="j"
+              v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''"
+              @click="col.item.onClick && col.item.onClick(item, i)">
+            <div :class="[col.item.class, 'field']" v-if="col.item.slot">
+              <slot :name="col.item.slot" :item="item" :i="i"></slot>
+            </div>
+            <div v-else :class="[col.item.class, 'field']"
+                 v-html="col.item.content ? col.item.content(item) : item[col.item.key]">
+            </div>
+          </td>
+        </tr>
+        </tbody>
+        <!--TABLE FOOTER, TOTALS-->
+        <tfoot v-if="$c_showTotal && $c_items.length">
+        <tr>
+          <td v-if="selectable" class="col-disable-bg"></td>
+          <td v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="$c_shouldDisplayColumn[i]"
+              :style="(col.item.total && col.item.total.style) || col.item.style || ''"
+              :class="{'col-disable-bg': !col.item.total}">
+            <template v-if="col.item.total">
+              <div v-html="col.item.total.content($c_totals)"></div>
+            </template>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="space"></div>
+
+    <!-- BOTTOM SLOT -->
+    <div class="row">
+      <slot name="bottom">
+        <slot name="vot-bottom-utils">
+          <vue-opti-select class="col-md-2 col-sm-12"
+                         v-model="paginationSize"
+                         :list="rows"
+                         @click="$_pageSizeChanged()">
+          </vue-opti-select>
+          <div class="col-md-auto" v-if="enableExport">
+            <download-excel
+              class="btn btn-secondary pointer-button"
+              :data="items"
+              :fields="$c_exportTable"
+              type="csv"
+              :name="`${exportLabel}.csv`">
+              Download CSV
+            </download-excel>
+          </div>
+        </slot>
+        <slot name="vot-bottom-pagination">
+          <div class="col-md-4 col-sm-12 ml-md-auto" v-if="showPagination">
+            <ul class="pagination justify-content-end unselectable">
+              <li class="page-item">
+                <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                  1</a>
+              </li>
+              <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}" class="page-item">
+                <a :class="{'btn-bg-color': currentPage === page}" class="page-link" @click="$_changePageAction(page)">
+                  {{ page }}
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">
+                  {{ $c_pages }}
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </slot>
+      </slot>
+    </div>
+    <!--BOTTOM SLOT-->
+  </div>
+</template>
+
+<script>
+import JsonExcel from 'vue-json-excel';
+import { VueOptiSelect } from 'vue-opti-select';
+import draggable from 'vuedraggable';
+import props from './props';
+import data from './data';
+import computed from './computed';
+import methods from './methods';
+import watch from './watch';
+
+export default {
+  name: 'vue-opti-table',
+  props,
+  computed,
+  data,
+  methods,
+  watch,
+  components: {
+    downloadExcel: JsonExcel,
+    draggable,
+    VueOptiSelect,
+  },
+  model: {
+    prop: 'tableModel',
+    event: 'click',
+  },
+  created() {
+    this.localTableModel = this.tableModel;
+    if (window.localStorage.getItem(this.name)) {
+      this.localTableModel.displayColumns = JSON.parse(window.localStorage.getItem(this.name)).displayColumns;
+      this.localHeaderFields = JSON.parse(window.localStorage.getItem(this.name)).columnsOrder;
+    } else {
+      this.localHeaderFields = this.headerFields;
+      this.localTableModel.displayColumns = this.localHeaderFields.filter(field => field.display !== false);
+    }
+    this.$emit('click', this.localTableModel);
+  },
+};
+</script>
+
+<style scoped>
+  .table-holder {
+    overflow-x: auto;
+    border: 1px solid #e1e6ef;
+  }
+
+  .table-holder th {
+    padding: 0px !important;
+  }
+
+  .table-holder > table {
+    margin-bottom: 0px;
+  }
+
+  .select-all-row {
+    text-align: center;
+    background: #eee;
+    font-size: 14px;
+  }
+
+  .space {
+    height: 14px;
+    width: 100%;
+  }
+</style>
+
+<style scoped>
+  table {
+    font-size: 12px !important;
+  }
+
+  tr > th {
+    border-right: 1px solid #e1e6ef;
+    border-bottom: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    border-top: none;
+    vertical-align: middle;
+    padding: 7px !important;
+  }
+
+  tr > th:last-child {
+    border-right: none;
+  }
+
+  tr > th:last-child {
+  }
+
+  .field {
+    white-space: nowrap;
+    font-weight: normal;
+  }
+
+  tr > td {
+    vertical-align: middle;
+    border-right: 1px solid #e1e6ef;
+    border-bottom: none;
+    padding: 2px !important;
+  }
+
+  tr > td:last-child {
+    border-right: none;
+  }
+
+  tr > td:last-child {
+  }
+
+  .unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+</style>
+
+<style scoped>
+  .header {
+    display: table;
+    width: 100%;
+  }
+
+  .sort, .title, .cog {
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+
+  .sort {
+    width: 10px;
+  }
+
+  .cog {
+    text-align: right;
+  }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #e1e1e1;
+  }
+
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #e1e1e1;
+  }
+
+  .arrow-up-active {
+    border-bottom: 5px solid #777 !important;
+  }
+
+  .arrow-down-active {
+    border-top: 5px solid #777 !important;
+  }
+</style>
+
+<style scoped>
+  .page-item {
+    width: calc(100% / 7);
+  }
+
+  .page-item > a {
+    height: 33px;
+    line-height: 14px;
+    color: #999;
+    display: block;
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .page-item > a:focus {
+    color: #999;
+    background: transparent;
+  }
+
+  .page-item > a:hover {
+    color: #999;
+    background: #f1f1f1;
+    cursor: pointer;
+  }
+
+  .pagination {
+    margin-bottom: 0px;
+  }
+
+  .dropdown-divider {
+    margin: 0 !important;
+  }
+
+</style>
+
+<style scoped>
+  .filter .search, .filter .search:hover, .filter .search:focus {
+    border: 0px !important;
+    margin: 0px !important;
+  }
+
+  .col-disable-bg {
+    background: #eee !important;
+  }
+
+  .col-filter {
+    padding: 0px !important;
+  }
+
+  .b-dropdown {
+    width: 100% !important;
+    border: 0px !important;
+  }
+
+  .placeholder {
+    width: calc(100% - 10px) !important;
+    display: inline-block;
+    text-align: left;
+    text-align: center;
+  }
+
+  .filter .dropdown button {
+    border: 0px !important;
+  }
+
+  .pointer-button {
+    cursor: pointer;
+  }
+</style>
+
+<style lang="scss">
+  .datatable-wrapper {
+    .columns-dropdown {
+      .dropdown-menu {
+        min-width: 13.5rem;
+        max-height: 400px;
+        overflow-y: scroll;
+        padding: 0;
+        .dropdown-header {
+          color: #151b1e;
+          background-color: #FFF;
+          padding: 5px 10px;
+          label.custom-checkbox {
+            margin-bottom: 0;
+            .custom-control-description {
+              line-height: 20px;
+            }
+          }
+        }
+        label.custom-control {
+          margin-bottom: 0;
+        }
+        label > span.custom-control-description {
+          cursor: move;
+        }
+        .list-group-item {
+          padding: .5rem 1.25rem;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+    }
+    .active-selection {
+      width: 8px;
+      height: 8px;
+      background: transparent;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-sizing: content-box;
+      box-shadow: 0 0 0 2px #007bff;
+      margin: auto 0
+    }
+    .active-selection.active {
+      background: #007bff;
+    }
+    .badge-pill {
+      margin: auto 0;
+    }
+  }
+</style>
