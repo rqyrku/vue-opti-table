@@ -1,11 +1,21 @@
 <template>
   <div class="container mt-2">
 
+<<<<<<< HEAD
     <vue-opti-table selectable
                     name="demo-table"
                     v-model="tableModel"
                     @paginationChange="$_paginationChanged($event)"
                     @changedPage="$_pageChanged($event)"
+=======
+
+    <vue-opti-table selectable v-model="tableModel"
+                    @on-sort="$_paginationChanged($event)"
+                    @on-search="$_paginationChanged($event)"
+                    @on-rowCount="$_paginationChanged($event)"
+                    @on-pagination="$_paginationChanged($event)"
+                    :serverSidePagination="serverSidePagination"
+>>>>>>> 4b85c70939f5757d7b5b1618894623c2f8d7c36e
                     :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
@@ -37,14 +47,16 @@ export default {
       this.$_loadData(evt);
     },
     $_loadData({ page, count, sortField, sortType, search, searchableFields }) {
-      this.loading = true;
-      loader(page, count, sortField, sortType, search, searchableFields).then((r) => {
-        this.loading = false;
-        this.table.items = r.data;
-        this.pageCount = Math.ceil(r.pageInfo.totalItemsCount / count);
-      }).catch((t) => {
-        this.loading = false;
-      });
+      if (this.serverSidePagination) {
+        this.loading = true;
+        loader(page, count, sortField, sortType, search, searchableFields).then((r) => {
+          this.loading = false;
+          this.table.items = r.data;
+          this.pageCount = Math.ceil(r.pageInfo.totalItemsCount / count);
+        }).catch(() => {
+          this.loading = false;
+        });
+      }
     },
   },
   watch: {
