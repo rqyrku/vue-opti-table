@@ -70,14 +70,16 @@ export default {
   },
 
   $_paginationEvent() {
-    this.$emit('paginationChange', {
-      page: this.currentPage - 1,
-      count: this.paginationSize,
-      sortField: this.sortField,
-      sortType: this.sortOrder,
-      search: this.models.search,
-      searchableFields: this.$c_searchableFields,
-    });
+    if (this.serverSidePagination) {
+      this.$emit('paginationChange', {
+        page: this.currentPage - 1,
+        count: this.paginationSize,
+        sortField: this.sortField,
+        sortType: this.sortOrder,
+        search: this.models.search,
+        searchableFields: this.$c_searchableFields,
+      });
+    }
   },
 
   $_selectItem(row) {
