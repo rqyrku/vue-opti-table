@@ -14,7 +14,7 @@ export default {
         this.sortOrder = 'asc';
       }
       this.currentPage = 1;
-      this.$_paginationEvent();
+      this.$_paginationEvent('sort');
     }
   },
   // used for the show/hide columns dropdown
@@ -40,7 +40,7 @@ export default {
       this.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
 
-    this.$_paginationEvent();
+    this.$_paginationEvent('pagination');
   },
 
   // Select Rows Section
@@ -53,31 +53,33 @@ export default {
 
   $_pageSizeChanged() {
     this.currentPage = 1;
-    this.$_paginationEvent();
+    this.$_paginationEvent('rowCount');
   },
 
   $_searchKeyPress(event) {
     if (event.which === 13) {
       this.$_submitSearch();
     } else if (event.which === 8 && this.globalSearchValue.length === 1) {
+      this.globalSearchValue = '';
       this.$_submitSearch();
     }
   },
 
   $_submitSearch() {
     this.currentPage = 1;
-    this.$_paginationEvent();
+    this.$_paginationEvent('search');
   },
-
-  $_paginationEvent() {
-    this.$emit('paginationChange', {
-      page: this.currentPage - 1,
-      count: this.paginationSize,
-      sortField: this.sortField,
-      sortType: this.sortOrder,
-      search: this.globalSearchValue,
-      searchableFields: this.$c_searchableFields,
-    });
+  $_paginationEvent(type) {
+    if (this.serverSidePagination) {
+      this.$emit(`on-${type}`, {
+        page: this.currentPage - 1,
+        count: this.paginationSize,
+        sortField: this.sortField,
+        sortType: this.sortOrder,
+        search: this.globalSearchValue,
+        searchableFields: this.$c_searchableFields,
+      });
+    }
   },
 
   $_selectItem(row) {
