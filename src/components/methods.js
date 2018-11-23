@@ -40,7 +40,7 @@ export default {
       this.models.selectAllCheckbox = this.$c_areAllItemsSelectedOnCurrentPage;
     }
 
-    this.$_paginationEvent('page');
+    this.$_paginationEvent('pagination');
   },
 
   // Select Rows Section
@@ -53,7 +53,7 @@ export default {
 
   $_pageSizeChanged() {
     this.currentPage = 1;
-    this.$_paginationEvent('count');
+    this.$_paginationEvent('rowCount');
   },
 
   $_searchKeyPress(event) {
@@ -71,8 +71,7 @@ export default {
 
   $_paginationEvent(type) {
     if (this.serverSidePagination) {
-      this.$emit('paginationChange', {
-        type,
+      this.$emit(type, {
         page: this.currentPage - 1,
         count: this.paginationSize,
         sortField: this.sortField,
