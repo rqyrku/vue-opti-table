@@ -60,6 +60,7 @@ export default {
     if (event.which === 13) {
       this.$_submitSearch();
     } else if (event.which === 8 && this.globalSearchValue.length === 1) {
+      this.globalSearchValue = '';
       this.$_submitSearch();
     }
   },
@@ -75,7 +76,7 @@ export default {
         count: this.paginationSize,
         sortField: this.sortField,
         sortType: this.sortOrder,
-        search: this.model.search,
+        search: this.globalSearchValue,
         searchableFields: this.$c_searchableFields,
       });
     }

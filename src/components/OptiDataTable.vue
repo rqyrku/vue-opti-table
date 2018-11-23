@@ -74,7 +74,7 @@
         <thead>
         <tr>
           <th v-if="selectable" style="text-align: center;">
-            <b-form-checkbox class="m-2 p-10 pr-6 m-0" 
+            <b-form-checkbox class="m-2 p-10 pr-6 m-0"
                              v-model="selectAllCheckbox"
                              @click.prevent.native="$_selectAllItemsCurrentPageAction()">
             </b-form-checkbox>
