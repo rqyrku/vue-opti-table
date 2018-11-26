@@ -1,11 +1,11 @@
 export default { // eslint-disable-next-line
   globalSearchValue() {
-    if (!this.serverSidePagination) {
+    if (!this.serverSideMode) {
       this.currentPage = 1;
     }
   },
   items() {
-    if (!this.serverSidePagination) {
+    if (!this.serverSideMode) {
       this.$_changePageAction(1);
     }
   },

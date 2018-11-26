@@ -2,12 +2,14 @@
   <div class="container mt-2">
 
 
-    <vue-opti-table selectable v-model="tableModel"
+    <vue-opti-table selectable 
+                    name="demo-table"
+                    v-model="tableModel"
                     @on-sort="$_paginationChanged($event)"
                     @on-search="$_paginationChanged($event)"
                     @on-rowCount="$_paginationChanged($event)"
                     @on-pagination="$_paginationChanged($event)"
-                    :serverSidePagination="serverSidePagination"
+                    :serverSideMode="serverSideMode"
                     :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
@@ -39,7 +41,7 @@ export default {
       this.$_loadData(evt);
     },
     $_loadData({ page, count, sortField, sortType, search, searchableFields }) {
-      if (this.serverSidePagination) {
+      if (this.serverSideMode) {
         this.loading = true;
         loader(page, count, sortField, sortType, search, searchableFields).then((r) => {
           this.loading = false;

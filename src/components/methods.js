@@ -70,7 +70,7 @@ export default {
     this.$_paginationEvent('search');
   },
   $_paginationEvent(type) {
-    if (this.serverSidePagination) {
+    if (this.serverSideMode) {
       this.$emit(`on-${type}`, {
         page: this.currentPage - 1,
         count: this.paginationSize,

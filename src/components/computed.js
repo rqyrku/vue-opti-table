@@ -41,7 +41,7 @@ export default {
     return this.localTableModel.selectedRows.every(value => this.$c_itemsCurrentPage.indexOf(value) >= 0);
   },
   $c_itemsCurrentPage() {
-    if (this.serverSidePagination || !this.$c_pagesInPagination) {
+    if (this.serverSideMode || !this.$c_pagesInPagination) {
       return this.$c_items;
     }
     const start = (this.currentPage - 1) * this.paginationSize;
@@ -50,7 +50,7 @@ export default {
   },
   // items
   $c_items() {
-    if (this.serverSidePagination) {
+    if (this.serverSideMode) {
       return this.items;
     }
     let items = this.items;
@@ -100,7 +100,7 @@ export default {
 
   // pages
   $c_pages() {
-    if (this.serverSidePagination) {
+    if (this.serverSideMode) {
       return this.pageCount;
     }
     return Math.floor(this.$c_items.length / this.paginationSize) + (this.$c_items.length % this.paginationSize && 1) || 1;

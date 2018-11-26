@@ -10,27 +10,27 @@
         </div>
         <!-- TABLE ACTIONS SLOT -->
 
-        <!-- SEARCH SLOT -->
+        <!-- TABLE UTILS SLOT -->
         <div class="col-xs-12 col-md-6 col-lg-6 justify-content-end">
           <b-input-group>
             <!-- SEARCH SLOT -->
             <slot name="vot-search" v-if="globalSearch" >
               <input v-model="globalSearchValue"
                     class="form-control"
-                    placeholder="Search..."
+                    :placeholder="globalSearchPlaceholder"
                     @focus.native="$event.target.select()"
                     @keydown.native="$_searchKeyPress" />
             </slot>
             <!-- END SEARCH SLOT -->
 
-            <!-- TABLE UTILS SLOT -->
+            <!-- TABLE SETTINGS SLOT -->
             <div class="btn-group" role="group">
               <slot name="vot-utils">
 
                 <!-- COLUMNS UTIL DROPDOWN -->
                 <b-dropdown v-if="columnsUtility" :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
                   <template slot="button-content">
-                    <img width="20px" height="20px" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2IDU2IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NiA1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiPgo8Zz4KCTxwYXRoIGQ9Ik04LDE0YzMuNTE5LDAsNi40MzItMi42MTQsNi45Mi02SDU0YzAuNTUzLDAsMS0wLjQ0NywxLTFzLTAuNDQ3LTEtMS0xSDE0LjkyQzE0LjQzMiwyLjYxNCwxMS41MTksMCw4LDAgICBDNC4xNCwwLDEsMy4xNDEsMSw3UzQuMTQsMTQsOCwxNHogTTgsMmMyLjc1NywwLDUsMi4yNDMsNSw1cy0yLjI0Myw1LTUsNVMzLDkuNzU3LDMsN1M1LjI0MywyLDgsMnoiIGZpbGw9IiMwMDAwMDAiLz4KCTxwYXRoIGQ9Ik00OCw0MmMtMy41MTksMC02LjQzMiwyLjYxNC02LjkyLDZIMmMtMC41NTIsMC0xLDAuNDQ3LTEsMXMwLjQ0OCwxLDEsMWgzOS4wOGMwLjQ4OCwzLjM4NiwzLjQwMSw2LDYuOTIsNiAgIGMzLjg1OSwwLDctMy4xNDEsNy03UzUxLjg1OSw0Miw0OCw0MnogTTQ4LDU0Yy0yLjc1NywwLTUtMi4yNDMtNS01czIuMjQzLTUsNS01czUsMi4yNDMsNSw1UzUwLjc1Nyw1NCw0OCw1NHoiIGZpbGw9IiMwMDAwMDAiLz4KCTxwYXRoIGQ9Ik01NCwyN0gzNS4zNjhjLTAuMzk2LTMuNjAyLTMuNDU1LTYuNDE0LTcuMTYxLTYuNDE0Yy0zLjcwNiwwLTYuNzY1LDIuODEzLTcuMTYxLDYuNDE0SDJjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDEgICBoMTkuMTA5YzAuNTc3LDMuNCwzLjUzNiw2LDcuMDk4LDZjMy41NjIsMCw2LjUyLTIuNiw3LjA5Ny02SDU0YzAuNTUzLDAsMS0wLjQ0NywxLTFTNTQuNTUzLDI3LDU0LDI3eiBNMjguMjA3LDMzICAgQzI1LjMzNiwzMywyMywzMC42NjQsMjMsMjcuNzkzczIuMzM2LTUuMjA3LDUuMjA3LTUuMjA3czUuMjA3LDIuMzM2LDUuMjA3LDUuMjA3UzMxLjA3OCwzMywyOC4yMDcsMzN6IiBmaWxsPSIjMDAwMDAwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" />
+                    <img width="20px" height="20px" src="../assets/icons/controls.svg" alt="Controls">
                   </template>
                   <div class="card">
                     <div class="card-header text-center">
@@ -40,7 +40,7 @@
                       <draggable v-model="localHeaderFields">
                         <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
                             class="list-group-item">
-                          <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                          <div style="display:flex; flex-direction:row; justify-content:flex-start">
                             <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
                               {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
                             </b-form-checkbox>
@@ -56,7 +56,7 @@
                 <!-- SETTINGS UTIL DROPDOWN -->
                 <b-dropdown v-if="columnsUtility" text="Settings" class="columns-dropdown" :no-flip="true" right >
                   <template slot="button-content">
-                    <img width="20px" height="20spx" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU0IDU0IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NCA1NDsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiPgo8Zz4KCTxwYXRoIGQ9Ik0yNywxM2MtNy43MiwwLTE0LDYuMjgtMTQsMTRzNi4yOCwxNCwxNCwxNHMxNC02LjI4LDE0LTE0UzM0LjcyLDEzLDI3LDEzeiBNMjcsMzljLTYuNjE3LDAtMTItNS4zODMtMTItMTJzNS4zODMtMTIsMTItMTIgICBzMTIsNS4zODMsMTIsMTJTMzMuNjE3LDM5LDI3LDM5eiIgZmlsbD0iIzAwMDAwMCIvPgoJPHBhdGggZD0iTTUxLjIyLDIxaC0yLjAxOGMtMC41MTUtMS45MTItMS4yNzItMy43NDItMi4yNi01LjQ1N2wxLjQyNi0xLjQyNmMwLjUyNS0wLjUyNSwwLjgxNC0xLjIyNCwwLjgxNC0xLjk2NiAgIGMwLTAuNzQzLTAuMjg5LTEuNDQxLTAuODE0LTEuOTY3bC00LjU1My00LjU1M2MtMS4wNS0xLjA0OS0yLjg4MS0xLjA1MS0zLjkzMywwbC0xLjQyNiwxLjQyNkMzNi43NCw2LjA3LDM0LjkxMSw1LjMxMywzMyw0Ljc5OCAgIFYyLjc4QzMzLDEuMjQ3LDMxLjc1MywwLDMwLjIyLDBIMjMuNzhDMjIuMjQ3LDAsMjEsMS4yNDcsMjEsMi43OHYyLjAxOGMtMS45MTEsMC41MTUtMy43NCwxLjI3Mi01LjQ1NywyLjI2bC0xLjQyNi0xLjQyNiAgIGMtMS4wNTEtMS4wNTItMi44ODMtMS4wNS0zLjkzMywwbC00LjU1Myw0LjU1M2MtMC41MjUsMC41MjUtMC44MTQsMS4yMjQtMC44MTQsMS45NjdjMCwwLjc0MiwwLjI4OSwxLjQ0LDAuODE0LDEuOTY2bDEuNDI2LDEuNDI2ICAgQzYuMDcsMTcuMjU4LDUuMzEyLDE5LjA4OCw0Ljc5OCwyMUgyLjc4QzEuMjQ3LDIxLDAsMjIuMjQ3LDAsMjMuNzh2Ni40MzlDMCwzMS43NTMsMS4yNDcsMzMsMi43OCwzM2gyLjAxOCAgIGMwLjUxNSwxLjkxMSwxLjI3MiwzLjc0LDIuMjYsNS40NTdsLTEuNDI2LDEuNDI2Yy0wLjUyNSwwLjUyNS0wLjgxNCwxLjIyNC0wLjgxNCwxLjk2NmMwLDAuNzQzLDAuMjg5LDEuNDQxLDAuODE0LDEuOTY3ICAgbDQuNTUzLDQuNTUzYzEuMDUsMS4wNTEsMi44ODIsMS4wNTIsMy45MzMsMGwxLjQyNi0xLjQyNmMxLjcxNywwLjk4NywzLjU0NiwxLjc0NSw1LjQ1NywyLjI2djIuMDE4YzAsMS41MzMsMS4yNDcsMi43OCwyLjc4LDIuNzggICBoNi40MzljMS41MzMsMCwyLjc4LTEuMjQ3LDIuNzgtMi43OHYtMi4wMThjMS45MTEtMC41MTUsMy43NC0xLjI3Miw1LjQ1Ny0yLjI2bDEuNDI2LDEuNDI2YzEuMDUyLDEuMDUyLDIuODgyLDEuMDUsMy45MzMsMCAgIGw0LjU1My00LjU1M2MwLjUyNS0wLjUyNSwwLjgxNC0xLjIyNCwwLjgxNC0xLjk2N2MwLTAuNzQyLTAuMjg5LTEuNDQtMC44MTQtMS45NjZsLTEuNDI2LTEuNDI2ICAgYzAuOTg3LTEuNzE3LDEuNzQ1LTMuNTQ2LDIuMjYtNS40NTdoMi4wMThjMS41MzMsMCwyLjc4LTEuMjQ3LDIuNzgtMi43OFYyMy43OEM1NCwyMi4yNDcsNTIuNzUzLDIxLDUxLjIyLDIxeiBNNTIsMzAuMjIgICBDNTIsMzAuNjUsNTEuNjUsMzEsNTEuMjIsMzFoLTMuNTkybC0wLjE4LDAuNzczYy0wLjUyMSwyLjIzNy0xLjM5OSw0LjM2LTIuNjEzLDYuMzExbC0wLjQyLDAuNjc0bDIuNTM5LDIuNTM5ICAgYzAuMzA1LDAuMzA1LDAuMzA1LDAuOCwwLDEuMTA0bC00LjU1Myw0LjU1M2MtMC4zMDQsMC4zMDQtMC43OTksMC4zMDYtMS4xMDQsMGwtMi41MzktMi41MzlsLTAuNjc0LDAuNDIgICBjLTEuOTUsMS4yMTQtNC4wNzMsMi4wOTMtNi4zMTEsMi42MTNMMzEsNDcuNjI4djMuNTkyQzMxLDUxLjY1LDMwLjY1LDUyLDMwLjIyLDUySDIzLjc4QzIzLjM1LDUyLDIzLDUxLjY1LDIzLDUxLjIydi0zLjU5MiAgIGwtMC43NzMtMC4xOGMtMi4yMzctMC41MjEtNC4zNi0xLjM5OS02LjMxMS0yLjYxM2wtMC42NzQtMC40MmwtMi41MzksMi41MzljLTAuMzA2LDAuMzA2LTAuODAxLDAuMzA0LTEuMTA0LDBsLTQuNTUzLTQuNTUzICAgYy0wLjMwNS0wLjMwNS0wLjMwNS0wLjgsMC0xLjEwNGwyLjUzOS0yLjUzOWwtMC40Mi0wLjY3NGMtMS4yMTQtMS45NS0yLjA5My00LjA3My0yLjYxMy02LjMxMUw2LjM3MiwzMUgyLjc4ICAgQzIuMzUsMzEsMiwzMC42NSwyLDMwLjIyVjIzLjc4QzIsMjMuMzUsMi4zNSwyMywyLjc4LDIzaDMuNTkybDAuMTgtMC43NzNjMC41MjEtMi4yMzgsMS4zOTktNC4zNjEsMi42MTMtNi4zMTFsMC40Mi0wLjY3NCAgIGwtMi41MzktMi41MzljLTAuMzA1LTAuMzA1LTAuMzA1LTAuOCwwLTEuMTA0bDQuNTUzLTQuNTUzYzAuMzA0LTAuMzA0LDAuNzk5LTAuMzA2LDEuMTA0LDBsMi41MzksMi41MzlsMC42NzQtMC40MiAgIGMxLjk1LTEuMjE0LDQuMDczLTIuMDkzLDYuMzExLTIuNjEzTDIzLDYuMzcyVjIuNzhDMjMsMi4zNSwyMy4zNSwyLDIzLjc4LDJoNi40MzlDMzAuNjUsMiwzMSwyLjM1LDMxLDIuNzh2My41OTJsMC43NzMsMC4xOCAgIGMyLjIzNywwLjUyMSw0LjM2LDEuMzk5LDYuMzExLDIuNjEzbDAuNjc0LDAuNDJsMi41MzktMi41MzljMC4zMDYtMC4zMDYsMC44MDEtMC4zMDQsMS4xMDQsMGw0LjU1Myw0LjU1MyAgIGMwLjMwNSwwLjMwNSwwLjMwNSwwLjgsMCwxLjEwNGwtMi41MzksMi41MzlsMC40MiwwLjY3NGMxLjIxNCwxLjk0OSwyLjA5Myw0LjA3MiwyLjYxMyw2LjMxMUw0Ny42MjgsMjNoMy41OTIgICBDNTEuNjUsMjMsNTIsMjMuMzUsNTIsMjMuNzhWMzAuMjJ6IiBmaWxsPSIjMDAwMDAwIi8+Cgk8cGF0aCBkPSJNMjcsMTdjLTUuNTE0LDAtMTAsNC40ODYtMTAsMTBzNC40ODYsMTAsMTAsMTBzMTAtNC40ODYsMTAtMTBTMzIuNTE0LDE3LDI3LDE3eiBNMjcsMzVjLTQuNDExLDAtOC0zLjU4OS04LThzMy41ODktOCw4LTggICBzOCwzLjU4OSw4LDhTMzEuNDExLDM1LDI3LDM1eiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+                    <img width="20px" height="20px" src="../assets/icons/settings.svg" alt="Controls">
                   </template>
                   <div class="card">
                     <div class="card-header text-center">
@@ -64,8 +64,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                       <draggable v-model="localHeaderFields">
-                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
-                            class="list-group-item">
+                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content" class="list-group-item">
                           <div style="display:flex;flex-direction:row;justify-content:flex-start">
                             <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
                               {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
@@ -82,7 +81,7 @@
             </div>
           </b-input-group>
         </div>
-        <!-- END TABLE UTIL SLOT -->
+        <!-- END TABLE UTILS SLOT -->
       </slot>
     </div>
     <!-- END TOP SLOT -->
@@ -103,15 +102,21 @@
     <!-- END SELECT ALL OPTION -->
 
     <!--TABLE -->
-    <div class="table-holder">
+    <div class="vot-holder">
       <!--0 ITEMS-->
-      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
-           v-if="!$c_items.length && !(serverSidePagination && loading)">
-        No Results.
+      <div class="vot-loader-container" v-if="!$c_items.length && !(serverSideMode && loading)">
+        <slot name="vot-no-result-content">
+          <div class="vot-no-result-content">
+            <h5>No data to display :(</h5>
+          </div>
+        </slot>
       </div>
-      <div style="padding: 7px; padding-left: 13px; border-top: 1px solid #e1e6ef;"
-           v-if="serverSidePagination && loading">
-        Loading...
+      <div class="vot-loader-container" v-if="serverSideMode && loading">
+        <slot name="vot-loader-content">
+          <div class="vot-loader-content">
+            <img src="../assets/loaders/loader-10.gif" width="100px" height="100px" alt="Loading...">
+          </div>
+        </slot>
       </div>
       <table :class="[{'table-hover': hover}, 'table table-striped']">
         <!--ALL CHECKBOX & TABLE HEADERS-->
@@ -275,17 +280,44 @@ export default {
 </script>
 
 <style scoped>
-  .table-holder {
+  .vot-holder {
     overflow-x: auto;
+    position: relative;
+    min-height: 180px;
+    width: 100%;
     border: 1px solid #e1e6ef;
   }
 
-  .table-holder th {
+  .vot-holder th {
     padding: 0px !important;
   }
 
-  .table-holder > table {
+  .vot-holder > table {
     margin-bottom: 0px;
+  }
+
+  .vot-loader-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgba(221,221,221,0.2)
+  }
+
+  .vot-loader-content {
+    z-index: 100;
+    text-align: center;
+    position: relative;
+    top: 40%;
+  }
+
+  .vot-no-result-content {
+    z-index: 100;
+    text-align: center;
+    position: relative;
+    top: 50%;
   }
 
   .select-all-row {
@@ -307,7 +339,7 @@ export default {
 
   tr > th {
     border-right: 1px solid #e1e6ef;
-    border-bottom: none;
+    border-bottom: 1px solid #e1e6ef;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

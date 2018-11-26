@@ -18,7 +18,8 @@ export default {
   defaultRows: { type: Number, default: 10 },
   tableModel: null,
   searchValue: { type: String, default: '' },
-  serverSidePagination: { type: Boolean, default: false },
+  serverSideMode: { type: Boolean, default: false },
   pageCount: { type: Number, default: 1 },
   loading: { type: Boolean, default: false },
+  globalSearchPlaceholder: { type: String, default: 'Search...' },
 };
