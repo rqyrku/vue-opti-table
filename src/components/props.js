@@ -1,7 +1,6 @@
 export default {
   name: { type: String, required: true },
   selectable: { type: Boolean, default: false },
-  hover: { type: Boolean, default: false },
   headerFields: { type: Array, required: true },
   items: { type: Array, required: true },
   page: { type: Number, default: 1 },
@@ -15,6 +14,7 @@ export default {
   exportLabel: { type: String, default: 'export' },
   columnsUtility: { type: Boolean, default: true },
   columnsUtilityLabel: { type: String, default: 'Columns' },
+  settingsUtilityLabel: { type: String, default: 'Settings' },
   defaultRows: { type: Number, default: 10 },
   tableModel: null,
   searchValue: { type: String, default: '' },
@@ -22,4 +22,11 @@ export default {
   pageCount: { type: Number, default: 1 },
   loading: { type: Boolean, default: false },
   globalSearchPlaceholder: { type: String, default: 'Search...' },
+  // Table Styling Props
+  tableHover: { type: Boolean, default: false },
+  tableBordered: { type: Boolean, default: false },
+  tableStriped: { type: Boolean, default: true },
+  tableInverse: { type: Boolean, default: false },
+  tableResponsive: { type: Boolean, default: true },
+  tableSmall: { type: Boolean, default: false },
 };

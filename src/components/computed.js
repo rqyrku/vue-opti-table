@@ -131,27 +131,23 @@ export default {
 
   $c_shouldDisplayColumn() {
     const displayCols = [];
+
     this.localHeaderFields.forEach((header) => {
       const result = this.tableModel.displayColumns.find(column => column.item.key === header.item.key);
-      if (result) {
-        displayCols.push(true);
-      } else {
-        displayCols.push(false);
-      }
+      displayCols.push(result ? true : false);
     });
+
     return displayCols;
   },
 
   $c_shouldSelectRow() {
     const selectedRows = [];
+
     this.$c_itemsCurrentPage.forEach((item) => {
       const result = this.tableModel.selectedRows.find(row => row === item);
-      if (result) {
-        selectedRows.push(true);
-      } else {
-        selectedRows.push(false);
-      }
+      selectedRows.push(result ? true : false);
     });
+
     return selectedRows;
   },
 
@@ -167,6 +163,7 @@ export default {
   },
 
   $c_exportTable() {
+    // TODO FIX CASE WHEN HEADER IS A FUNCTION
     const table = {};
     this.$c_sortedHeaderFields.forEach((field) => {
       if (field.item.content) {

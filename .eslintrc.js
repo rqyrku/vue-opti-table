@@ -54,6 +54,7 @@ module.exports = {
     'consistent-return': 'off',
     'no-shadow': 'off',
     'linebreak-style': 'off',
-    'no-confusing-arrow': 'off'
+    'no-confusing-arrow': 'off',
+    'no-unneeded-ternary': 'off'
   }
 }

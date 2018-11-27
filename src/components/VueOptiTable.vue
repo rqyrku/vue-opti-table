@@ -2,87 +2,85 @@
   <div class="datatable-wrapper">
     <!--TOP SLOT-->
     <div class="row">
-      <slot name="vot-top">
 
-        <!-- TABLE ACTIONS SLOT -->
-        <div class="col-xs-12 col-md-6 col-lg-6">
-          <slot name="vot-actions"></slot>
-        </div>
-        <!-- TABLE ACTIONS SLOT -->
+      <!-- TABLE ACTIONS SLOT -->
+      <div class="col-xs-12 col-md-6 col-lg-6">
+        <slot name="vot-top-actions"></slot>
+      </div>
+      <!-- TABLE ACTIONS SLOT -->
 
-        <!-- TABLE UTILS SLOT -->
-        <div class="col-xs-12 col-md-6 col-lg-6 justify-content-end">
-          <b-input-group>
-            <!-- SEARCH SLOT -->
-            <slot name="vot-search" v-if="globalSearch" >
-              <input v-model="globalSearchValue"
-                    class="form-control"
-                    :placeholder="globalSearchPlaceholder"
-                    @focus.native="$event.target.select()"
-                    @keydown.native="$_searchKeyPress" />
+      <!-- TABLE UTILS SLOT -->
+      <div class="col-xs-12 col-md-6 col-lg-6 justify-content-end">
+        <b-input-group>
+          <!-- SEARCH SLOT -->
+          <slot name="vot-top-search" v-if="globalSearch">
+            <input v-model="globalSearchValue"
+                  class="form-control"
+                  :placeholder="globalSearchPlaceholder"
+                  @focus.native="$event.target.select()"
+                  @keydown.native="$_searchKeyPress" />
+          </slot>
+          <!-- END SEARCH SLOT -->
+
+          <!-- TABLE SETTINGS SLOT -->
+          <div class="btn-group" role="group">
+            <slot name="vot-top-utils">
+
+              <!-- COLUMNS UTIL DROPDOWN -->
+              <b-dropdown v-if="columnsUtility" :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
+                <template slot="button-content">
+                  <img width="20px" height="20px" src="/static/icons/controls.svg" alt="Controls">
+                </template>
+                <div class="card">
+                  <div class="card-header text-center">
+                    <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Columns State</button>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <draggable v-model="localHeaderFields">
+                      <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                          class="list-group-item">
+                        <div style="display:flex; flex-direction:row; justify-content:flex-start">
+                          <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                            {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                          </b-form-checkbox>
+                        </div>
+                        <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                      </li>
+                    </draggable>
+                  </ul>
+                </div>
+              </b-dropdown>
+              <!-- END COLUMNS UTIL DROPDOWN -->
+
+              <!-- SETTINGS UTIL DROPDOWN -->
+              <b-dropdown v-if="columnsUtility" :text="settingsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
+                <template slot="button-content">
+                  <img width="20px" height="20px" src="/static/icons/settings.svg" alt="Controls">
+                </template>
+                <div class="card">
+                  <div class="card-header text-center">
+                    <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <draggable v-model="localHeaderFields">
+                      <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content" class="list-group-item">
+                        <div style="display:flex;flex-direction:row;justify-content:flex-start">
+                          <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                            {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
+                          </b-form-checkbox>
+                        </div>
+                        <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
+                      </li>
+                    </draggable>
+                  </ul>
+                </div>
+              </b-dropdown>
+              <!-- END SETTINGS UTIL DROPDOWN -->
             </slot>
-            <!-- END SEARCH SLOT -->
-
-            <!-- TABLE SETTINGS SLOT -->
-            <div class="btn-group" role="group">
-              <slot name="vot-utils">
-
-                <!-- COLUMNS UTIL DROPDOWN -->
-                <b-dropdown v-if="columnsUtility" :text="columnsUtilityLabel" class="columns-dropdown" :no-flip="true" right >
-                  <template slot="button-content">
-                    <img width="20px" height="20px" src="../assets/icons/controls.svg" alt="Controls">
-                  </template>
-                  <div class="card">
-                    <div class="card-header text-center">
-                      <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <draggable v-model="localHeaderFields">
-                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
-                            class="list-group-item">
-                          <div style="display:flex; flex-direction:row; justify-content:flex-start">
-                            <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
-                              {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
-                            </b-form-checkbox>
-                          </div>
-                          <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
-                        </li>
-                      </draggable>
-                    </ul>
-                  </div>
-                </b-dropdown>
-                <!-- END COLUMNS UTIL DROPDOWN -->
-
-                <!-- SETTINGS UTIL DROPDOWN -->
-                <b-dropdown v-if="columnsUtility" text="Settings" class="columns-dropdown" :no-flip="true" right >
-                  <template slot="button-content">
-                    <img width="20px" height="20px" src="../assets/icons/settings.svg" alt="Controls">
-                  </template>
-                  <div class="card">
-                    <div class="card-header text-center">
-                      <button class="btn btn-outline-primary btn-sm" @click="$_saveSettings()">Save Settings</button>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <draggable v-model="localHeaderFields">
-                        <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content" class="list-group-item">
-                          <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                            <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
-                              {{ typeof col.header.content === 'function' ? col.header.content() : col.header.content }}
-                            </b-form-checkbox>
-                          </div>
-                          <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
-                        </li>
-                      </draggable>
-                    </ul>
-                  </div>
-                </b-dropdown>
-                <!-- END SETTINGS UTIL DROPDOWN -->
-              </slot>
-            </div>
-          </b-input-group>
-        </div>
-        <!-- END TABLE UTILS SLOT -->
-      </slot>
+          </div>
+        </b-input-group>
+      </div>
+      <!-- END TABLE UTILS SLOT -->
     </div>
     <!-- END TOP SLOT -->
 
@@ -114,11 +112,18 @@
       <div class="vot-loader-container" v-if="serverSideMode && loading">
         <slot name="vot-loader-content">
           <div class="vot-loader-content">
-            <img src="../assets/loaders/loader-10.gif" width="100px" height="100px" alt="Loading...">
+            <img src="/static/loaders/loader-10.gif" width="100px" height="100px" alt="Loading...">
           </div>
         </slot>
       </div>
-      <table :class="[{'table-hover': hover}, 'table table-striped']">
+      <table class="table" :class="{
+        'table-hover': tableHover,
+        'table-bordered': tableBordered,
+        'table-striped': tableStriped,
+        'table-inverse': tableInverse,
+        'table-responsive': tableResponsive,
+        'table-small': tableSmall,
+        }">
         <!--ALL CHECKBOX & TABLE HEADERS-->
         <thead>
         <tr>
@@ -191,49 +196,53 @@
 
     <!-- BOTTOM SLOT -->
     <div class="row">
-      <slot name="bottom">
-        <slot name="vot-bottom-utils">
-          <vue-opti-select class="col-md-2 col-sm-12"
-                         v-model="paginationSize"
-                         :list="rows"
-                         @click="$_pageSizeChanged()">
-          </vue-opti-select>
-          <div class="col-md-auto" v-if="enableExport">
-            <download-excel
-              class="btn btn-secondary pointer-button"
-              :data="items"
-              :fields="$c_exportTable"
-              type="csv"
-              :name="`${exportLabel}.csv`">
-              Download CSV
-            </download-excel>
-          </div>
-        </slot>
-        <slot name="vot-bottom-pagination">
-          <div class="col-md-4 col-sm-12 ml-md-auto" v-if="showPagination">
-            <ul class="pagination justify-content-end unselectable">
-              <li class="page-item">
-                <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction(1)">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                  1</a>
-              </li>
-              <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}" class="page-item">
-                <a :class="{'btn-bg-color': currentPage === page}" class="page-link" @click="$_changePageAction(page)">
-                  {{ page }}
-                </a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">
-                  {{ $c_pages }}
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </slot>
+      <vue-opti-select class="col-xs-4 col-md-2 col-lg-2"
+                      v-model="paginationSize"
+                      :list="rows"
+                      @click="$_pageSizeChanged()">
+      </vue-opti-select>
+
+      <div class="col-xs-4 col-md-2 col-lg-2" v-if="enableExport">
+        <download-excel
+          class="btn btn-secondary pointer-button"
+          :data="items"
+          :fields="$c_exportTable"
+          type="csv"
+          :name="`${exportLabel}.csv`">
+          Download CSV
+        </download-excel>
+      </div>
+
+      <!-- START BOTTOM ACTIONS SLOT -->
+      <slot name="vot-bottom-actions"></slot>
+      <!-- END BOTTOM ACTIONS SLOT -->
+
+      <!-- START BOTTOM PAGINATION SLOT -->
+      <slot name="vot-bottom-pagination">
+        <div class="col-md-4 col-sm-12 ml-md-auto" v-if="showPagination">
+          <ul class="pagination justify-content-end unselectable">
+            <li class="page-item">
+              <a class="page-link" @click="$_changePageAction(1)">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+                1</a>
+            </li>
+            <li v-for="(page, i) in $c_pagesInPagination" :key="i" :class="{'active': currentPage === page}" class="page-item">
+              <a :class="{'btn-bg-color': currentPage === page}" class="page-link" @click="$_changePageAction(page)">
+                {{ page }}
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" style="font-size: 9px; padding-top: 9px;" @click="$_changePageAction($c_pages)">
+                {{ $c_pages }}
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </slot>
+      <!-- END BOTTOM PAGINATION SLOT -->
     </div>
     <!--BOTTOM SLOT-->
   </div>
@@ -303,7 +312,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 100;
-    background-color: rgba(221,221,221,0.2)
+    background-color: rgba(221,221,221,0.3)
   }
 
   .vot-loader-content {
