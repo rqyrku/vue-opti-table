@@ -1,11 +1,18 @@
 <template>
   <div class="container mt-2">
 
-    <vue-opti-table selectable v-model="tableModel" @paginationChange="$_paginationChanged($event)"
-                    @on-sort="$_paginationChanged($event)" @on-search="$_paginationChanged($event)" @on-rowCount="$_paginationChanged($event)" @on-pagination="$_paginationChanged($event)" :serverSidePagination="serverSidePagination" :loading="loading"
+    <vue-opti-table name="demo-table"
+                    selectable
+                    v-model="tableModel"
+                    @on-sort="$_paginationChanged($event)"
+                    @on-search="$_paginationChanged($event)"
+                    @on-rows-per-page-change="$_paginationChanged($event)"
+                    @on-pagination="$_paginationChanged($event)"
+                    :serverSidePagination="serverSidePagination"
+                    :loading="loading"
                     :pageCount="pageCount"
                     :page="currentPage"
-                    :header-fields="table.fields" name="demo-table"
+                    :header-fields="table.fields" 
                     :items="table.items">
     </vue-opti-table>
 
@@ -57,7 +64,3 @@ export default {
 
 };
 </script>
-
-<style lang="css">
-
-</style>

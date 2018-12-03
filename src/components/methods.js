@@ -53,7 +53,7 @@ export default {
 
   $_pageSizeChanged() {
     this.currentPage = 1;
-    this.$_paginationEvent('rowCount');
+    this.$_paginationEvent('row-per-page-change');
   },
 
   $_searchKeyPress(event) {
@@ -72,7 +72,7 @@ export default {
   $_paginationEvent(type) {
     if (this.serverSidePagination) {
       this.$emit(`on-${type}`, {
-        page: this.currentPage - 1,
+        page: this.currentPage,
         count: this.paginationSize,
         sortField: this.sortField,
         sortType: this.sortOrder,
@@ -89,7 +89,10 @@ export default {
     } else {
       this.localTableModel.selectedRows.push(row);
     }
-    this.$emit('click', this.localTableModel);
+    this.$emit('on-row-selection-change', {
+      selectedRow: row,
+      selectedRows: this.localTableModel.selectedRows,
+    });
   },
 
   $_selectAllItemsAction(v) {
@@ -101,7 +104,7 @@ export default {
       this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_items);
     }
     this.models.selectAllCheckbox = v;
-    this.$emit('click', this.localTableModel);
+    this.$emit('on-select-all', this.localTableModel.selectedRows);
   },
 
   $_saveSettings() {
