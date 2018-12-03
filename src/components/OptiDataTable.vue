@@ -14,11 +14,12 @@
       <div class="col-xl-4 col-md-5 col-sm-12 ml-md-auto" :class="searchClass">
 
         <b-input-group>
-          <b-form-input v-model="models.search" placeholder="Search..." @focus.native="$event.target.select()"
-                        @keydown.native="$_searchKeyPress"></b-form-input>
-          <b-input-group-button v-if="serverSidePagination">
-            <b-button @click="$_submitSearch">Search</b-button>
-          </b-input-group-button>
+          <b-form-input v-model="models.search"
+                        placeholder="Search..."
+                        @focus.native="$event.target.select()"
+                        @keydown.native="$_searchKeyPress">
+          </b-form-input>
+
           <b-input-group-button slot="right" v-if="enableColumns">
             <b-dropdown text="Columns" class="columns-dropdown" :no-flip="true" right>
               <div class="card">
@@ -30,11 +31,8 @@
                     <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
                         class="list-group-item">
                       <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)"
-                                         v-if="typeof col.header.content != 'function'">{{ col.header.content }}
-                        </b-form-checkbox>
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)"
-                                         v-if="typeof col.header.content == 'function'">{{ col.header.content() }}
+                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                                         {{ typeof col.header.content == 'function' ? col.header.content() : col.header.content }}
                         </b-form-checkbox>
                       </div>
                       <span class="badge badge-primary badge-pill">{{ i + 1 }}</span>
@@ -142,7 +140,8 @@
 
     <div class="row" v-if="showPagination">
       <vue-opti-select class="col-md-2 col-sm-12" v-model="paginationSize" :list="rows"
-                       @click="$_pageSizeChanged()"></vue-opti-select>
+                       @click="$_pageSizeChanged()">
+      </vue-opti-select>
       <div class="col-md-auto" v-if="enableExport">
         <download-excel
           class="btn btn-secondary pointer-button"

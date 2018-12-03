@@ -189,7 +189,7 @@ export default {
     const table = {};
     this.$c_sortedHeaderFields.forEach((field) => {
       if (field.item.content) {
-        table[field.header.content] = field.item.key;
+        table[typeof field.header.content === 'function' ? field.header.content() : field.header.content] = field.item.key;
       }
     });
     return table;
