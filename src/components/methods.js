@@ -89,10 +89,7 @@ export default {
     } else {
       this.localTableModel.selectedRows.push(row);
     }
-    this.$emit('on-row-selection-change', {
-      selectedRow: row,
-      selectedRows: this.localTableModel.selectedRows,
-    });
+    this.$emit('click', this.localTableModel);
   },
 
   $_selectAllItemsAction(v) {
@@ -104,7 +101,7 @@ export default {
       this.localTableModel.selectedRows = this.localTableModel.selectedRows.concat(this.$c_items);
     }
     this.models.selectAllCheckbox = v;
-    this.$emit('on-select-all', this.localTableModel.selectedRows);
+    this.$emit('click', this.localTableModel);
   },
 
   $_saveSettings() {
