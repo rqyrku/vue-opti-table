@@ -120,7 +120,7 @@ export default {
   // pages
   $c_pages() {
     if (this.serverSidePagination) {
-      return this.pageCount;
+      return this.pages;
     }
     return Math.floor(this.$c_items.length / this.paginationSize) + (this.$c_items.length % this.paginationSize && 1) || 1;
   },

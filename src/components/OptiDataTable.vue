@@ -17,7 +17,9 @@
           <b-form-input v-model="models.search"
                         placeholder="Search..."
                         @focus.native="$event.target.select()"
-                        @keydown.native="$_searchKeyPress">
+                        @keydown.enter.native="$_submitSearchOnEnter"
+                        @input="$_submitSearch"
+                        >
           </b-form-input>
 
           <b-input-group-button slot="right" v-if="enableColumns">
