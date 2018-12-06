@@ -56,12 +56,8 @@ export default {
     this.$_paginationEvent('row-per-page-change');
   },
 
-  $_searchKeyPress(event) {
-    if (event.which === 13) {
-      this.$_submitSearch();
-    } else if (event.which === 8 && this.models.search.length === 1) {
-      this.$_submitSearch();
-    }
+  $_submitSearchOnEnter() {
+    this.$_paginationEvent('enter-search');
   },
 
   $_submitSearch() {

@@ -19,6 +19,5 @@ export default {
   tableModel: null,
   searchValue: { type: String, default: '' },
   serverSidePagination: { type: Boolean, default: false },
-  pageCount: { type: Number, default: 1 },
   loading: { type: Boolean, default: false },
 };
