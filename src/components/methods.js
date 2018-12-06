@@ -69,7 +69,8 @@ export default {
     if (this.serverSidePagination) {
       this.$emit(`on-${type}`, {
         page: this.currentPage,
-        count: this.paginationSize,
+        pages: this.pages,
+        limit: this.paginationSize,
         sortField: this.sortField,
         sortType: this.sortOrder,
         search: this.models.search,
