@@ -22,16 +22,4 @@ export default { // eslint-disable-next-line
   headerFields(newVal) {
     this.localHeaderFields = newVal;
   },
-  page(val) {
-    this.currentPage = val;
-  },
-  sort(val) {
-    this.sortKey = val.key;
-    this.sortOrder = val.order;
-    this.sortField = val.field || val.key;
-  },
-  searchValue(val) {
-    this.models.search = val;
-  },
-
 };

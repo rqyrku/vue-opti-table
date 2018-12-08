@@ -1,6 +1,6 @@
 import items from './items';
 
-export default async function loadPaginatedData(page, count, sortField, sortDirection, search, searchFields) {
+export default async function loadPaginatedData(page, limit, sortField, sortDirection, search, searchFields) {
   let data = [...items];
   if (sortField) {
     data.sort((a, b) => {
@@ -55,13 +55,9 @@ export default async function loadPaginatedData(page, count, sortField, sortDire
       }),
     );
   }
-  page = page || 0;
-  let finalData;
-  if (count) {
-    finalData = data.slice(page * count, (page * count) + count);
-  } else {
-    finalData = data;
-  }
+  page = page || 1;
+  const finalData = limit ? data.slice((page - 1) * limit, ((page - 1) * limit) + limit) : data;
+
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
@@ -70,7 +66,7 @@ export default async function loadPaginatedData(page, count, sortField, sortDire
         pageInfo:
           {
             totalItemsCount: data.length,
-            hasNextPage: (page * count) + count < data.length,
+            hasNextPage: (page * limit) + limit < data.length,
           },
       });
     }, 500);

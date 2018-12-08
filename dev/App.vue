@@ -5,12 +5,14 @@
                     selectable
                     v-model="tableModel"
                     @on-sort="$_paginationChanged($event)"
-                    @on-search="$_paginationChanged($event)"
-                    @on-rows-per-page-change="$_paginationChanged($event)"
+                    @on-search="$_searchExec($event)"
+                    @on-row-per-page-change="$_paginationChanged($event)"
                     @on-pagination="$_paginationChanged($event)"
+                    :defaultRows="pageSize"
+                    :sort="{ key: 'email', order: 'asc' }"
                     :serverSidePagination="serverSidePagination"
                     :loading="loading"
-                    :pageCount="pageCount"
+                    :pages="pageCount"
                     :page="currentPage"
                     :header-fields="table.fields" 
                     :items="table.items">
@@ -39,27 +41,27 @@ export default {
     $_paginationChanged(evt) {
       this.$_loadData(evt);
     },
-    $_loadData({ page, count, sortField, sortType, search, searchableFields }) {
+    $_searchExec(evt) {
+      console.log(evt)
+      this.$_loadData(evt);
+      console.log(this.pageCount)
+    },
+    $_loadData({ page, limit, sortField, sortType, search, searchableFields }) {
       if (this.serverSidePagination) {
         this.loading = true;
-        loader(page, count, sortField, sortType, search, searchableFields).then((r) => {
+        loader(page, limit, sortField, sortType, search, searchableFields).then((r) => {
           this.loading = false;
           this.table.items = r.data;
-          this.pageCount = Math.ceil(r.pageInfo.totalItemsCount / count);
+          this.pageSize = limit
+          this.pageCount = Math.ceil(r.pageInfo.totalItemsCount / limit);
         }).catch(() => {
           this.loading = false;
         });
       }
     },
   },
-  watch: {
-    count(val) {
-      this.pageCount = val;
-    },
-
-  },
   created() {
-    this.$_loadData({ page: 0, count: 10 });
+    this.$_loadData({ page: 0, limit: 10 });
   },
 
 };
