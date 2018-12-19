@@ -18,8 +18,7 @@
                         placeholder="Search..."
                         @focus.native="$event.target.select()"
                         @keydown.enter.native="$_submitSearchOnEnter"
-                        @input="$_submitSearch"
-                        >
+                        @input="$_submitSearch">
           </b-form-input>
 
           <b-input-group-button slot="right" v-if="enableColumns">
@@ -30,10 +29,13 @@
                 </div>
                 <ul class="list-group list-group-flush">
                   <draggable v-model="localHeaderFields">
-                    <li v-for="(col, i) in $c_sortedHeaderFields" :key="i" v-if="col.item.content"
+                    <li v-for="(col, i) in $c_sortedHeaderFields"
+                        v-if="col.item.content"
+                        :key="i"
                         class="list-group-item">
                       <div style="display:flex;flex-direction:row;justify-content:flex-start">
-                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]" @change="$_toggleDisplayColumn(col)">
+                        <b-form-checkbox :checked="$c_shouldDisplayColumn[i]"
+                                         @change="$_toggleDisplayColumn(col)">
                                          {{ typeof col.header.content == 'function' ? col.header.content() : col.header.content }}
                         </b-form-checkbox>
                       </div>
@@ -71,9 +73,12 @@
           <th v-if="selectable" style="text-align: center;">
             <b-form-checkbox class="m-2" style="padding: 10px; padding-right: 6px; margin: 0px;"
                              v-model="models.selectAllCheckbox"
-                             @click.prevent.native="$_selectAllItemsCurrentPageAction()"></b-form-checkbox>
+                             @click.prevent.native="$_selectAllItemsCurrentPageAction()">
+            </b-form-checkbox>
           </th>
-          <th v-for="(col, i) in $c_sortedHeaderFields" v-if="$c_shouldDisplayColumn[i]" :key="i"
+          <th v-for="(col, i) in $c_sortedHeaderFields"
+              v-if="$c_shouldDisplayColumn[i]"
+              :key="i"
               :style="col.header.style || ''">
             <div class="header">
               <div v-if="col.item.sortable" class="sort p-2" @click="$_fieldClickAction(col)">
@@ -99,17 +104,24 @@
         <tbody>
         <tr v-for="(item, i) in $c_itemsCurrentPage" :key="i">
           <td v-if="selectable" style="text-align: center;">
-            <b-form-checkbox :checked="$c_shouldSelectRow[i]" style="padding: 10px; padding-right: 6px; margin: 0px;"
-                             @change="$_selectItem(item)"></b-form-checkbox>
+            <b-form-checkbox :checked="$c_shouldSelectRow[i]"
+                             style="padding: 10px; padding-right: 6px; margin: 0px;"
+                             @change="$_selectItem(item)">
+            </b-form-checkbox>
           </td>
-          <td v-for="(col, j) in $c_sortedHeaderFields" :class="col.item.cellClass" :key="j"
-              v-if="$c_shouldDisplayColumn[j]" :style="col.item.style || ''"
+          <td v-for="(col, j) in $c_sortedHeaderFields"
+              :key="j"
+              :class="col.item.cellClass"
+              v-if="$c_shouldDisplayColumn[j]"
+              :style="col.item.style || ''"
               @click="col.item.onClick && col.item.onClick(item, i)">
-            <div :class="[col.item.class, 'field']" v-if="col.item.slot">
+            <!-- CHECK IF FIELD IS A SLOT -->
+            <div v-if="col.item.slot" :class="[col.item.class, 'field']">
               <slot :name="col.item.slot" :item="item" :i="i"></slot>
             </div>
-            <div v-else :class="[col.item.class, 'field']"
-                 v-html="col.item.content ? col.item.content(item) : item[col.item.key]"></div>
+            <!-- OTHERWISE RENDER FIELD  -->
+            <div v-else :class="[col.item.class, 'field']" v-html="col.item.content ? col.item.content(item) : item[col.item.key]">
+            </div>
           </td>
         </tr>
         </tbody>
