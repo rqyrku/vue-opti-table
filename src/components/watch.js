@@ -19,16 +19,4 @@ export default { // eslint-disable-next-line
     this.localTableModel.columnsOrder = newVal;
     this.$emit('click', this.localTableModel);
   },
-  page(val) {
-    this.currentPage = val;
-  },
-  sort(val) {
-    this.sortKey = val.key;
-    this.sortOrder = val.order;
-    this.sortField = val.field || val.key;
-  },
-  searchValue(val) {
-    this.models.search = val;
-  },
-
 };
